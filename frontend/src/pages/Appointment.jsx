@@ -16,12 +16,29 @@ const Appointment = () => {
   const [docSlots, setDocSlots] = useState([]);
   const [slotIndex, setSlotIndex] = useState(0);
   const [slotTime, setSlotTime] = useState("");
+  const [recommendedSlots, setRecommendedSlots] = useState([]);
 
   const navigate = useNavigate();
 
   const fetchDocInfo = async () => {
     const docInfo = doctors.find((doc) => doc._id === docId);
     setDocInfo(docInfo);
+  };
+
+  // Получение рекомендуемых слотов на основе истории посещений
+  const getRecommendedSlots = async () => {
+    try {
+      const { data } = await axios.post(
+        backendUrl + "/api/user/doctor-recommended-slots",
+        { docId }
+      );
+      
+      if (data.success) {
+        setRecommendedSlots(data.recommendedSlots.map(slot => slot.time));
+      }
+    } catch (error) {
+      console.log("Ошибка при получении рекомендуемых слотов:", error);
+    }
   };
 
   const getAvailableSolts = async () => {
@@ -130,8 +147,14 @@ const Appointment = () => {
   useEffect(() => {
     if (docInfo) {
       getAvailableSolts();
+      getRecommendedSlots();
     }
   }, [docInfo]);
+
+  // Функция для проверки, является ли слот рекомендуемым
+  const isRecommendedSlot = (timeSlot) => {
+    return recommendedSlots.includes(timeSlot);
+  };
 
   return docInfo ? (
     <div>
@@ -184,6 +207,19 @@ const Appointment = () => {
       {/* Booking slots */}
       <div className="flex flex-col items-center mt-8 font-medium text-[#565656]">
         <p>Досупное время записи</p>
+        
+        {recommendedSlots.length > 0 && (
+          <div className="text-sm text-primary font-medium mt-2">
+            <p>Рекомендуемое время на основе истории записей:</p>
+            <div className="flex gap-2 justify-center mt-1">
+              {recommendedSlots.map((time, idx) => (
+                <span key={idx} className="px-2 py-1 bg-blue-50 border border-primary rounded-full text-xs">
+                  {time}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
 
         <div className="flex gap-3 items-center w-full max-w-xl overflow-x-scroll mt-4 justify-center">
           {docSlots.length &&
@@ -206,17 +242,25 @@ const Appointment = () => {
         <div className="flex gap-3 w-full overflow-x-scroll mt-4 justify-center">
           {docSlots.length &&
             docSlots[slotIndex].map((item, index) => (
-              <p
-                onClick={() => setSlotTime(item.time)}
-                key={index}
-                className={`text-sm font-light flex-shrink-0 px-5 py-2 rounded-full cursor-pointer ${
-                  item.time === slotTime
-                    ? "bg-primary text-white"
-                    : "text-[#949494] border border-[#B4B4B4]"
-                }`}
-              >
-                {item.time.toLowerCase()}
-              </p>
+              <div key={index} className="relative">
+                <p
+                  onClick={() => setSlotTime(item.time)}
+                  className={`text-sm font-light flex-shrink-0 px-5 py-2 rounded-full cursor-pointer ${
+                    item.time === slotTime
+                      ? "bg-primary text-white"
+                      : "text-[#949494] border border-[#B4B4B4]"
+                  } ${
+                    isRecommendedSlot(item.time) ? "border-2 border-primary" : ""
+                  }`}
+                >
+                  {item.time.toLowerCase()}
+                </p>
+                {isRecommendedSlot(item.time) && (
+                  <div className="absolute -top-2 -right-2 bg-primary text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
+                    ★
+                  </div>
+                )}
+              </div>
             ))}
         </div>
 

@@ -13,6 +13,7 @@ const DoctorContextProvider = (props) => {
     const [appointments, setAppointments] = useState([])
     const [dashData, setDashData] = useState(false)
     const [profileData, setProfileData] = useState(false)
+    const [patients, setPatients] = useState([])
 
     // Getting Doctor appointment data from Database using API
     const getAppointments = async () => {
@@ -92,6 +93,29 @@ const DoctorContextProvider = (props) => {
 
     }
 
+    // Функция для отправки инвойса по email пациенту
+    const sendInvoice = async (appointmentId, additionalText = '') => {
+        try {
+            const { data } = await axios.post(
+                backendUrl + '/api/doctor/send-invoice', 
+                { appointmentId, additionalText }, 
+                { headers: { dToken } }
+            )
+
+            if (data.success) {
+                toast.success(data.message)
+                return { success: true }
+            } else {
+                toast.error(data.message)
+                return { success: false, message: data.message }
+            }
+        } catch (error) {
+            toast.error(error.message)
+            console.log(error)
+            return { success: false, message: error.message }
+        }
+    }
+
     // Getting Doctor dashboard data using API
     const getDashData = async () => {
         try {
@@ -111,15 +135,33 @@ const DoctorContextProvider = (props) => {
 
     }
 
+    // Получение списка пациентов с количеством их приемов
+    const getPatients = async () => {
+        try {
+            const { data } = await axios.get(backendUrl + '/api/doctor/patients', { headers: { dToken } })
+
+            if (data.success) {
+                setPatients(data.patients)
+            } else {
+                toast.error(data.message)
+            }
+        } catch (error) {
+            console.log(error)
+            toast.error(error.message)
+        }
+    }
+
     const value = {
         dToken, setDToken, backendUrl,
         appointments,
         getAppointments,
         cancelAppointment,
         completeAppointment,
+        sendInvoice,
         dashData, getDashData,
         profileData, setProfileData,
         getProfileData,
+        patients, getPatients,
     }
 
     return (

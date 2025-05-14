@@ -11,6 +11,8 @@ import tick_icon from "./tick_icon.svg";
 import appointments_icon from "./appointments_icon.svg";
 import earning_icon from "./earning_icon.svg";
 import patients_icon from "./patients_icon.svg";
+import invoice_icon from "./invoice_icon.svg";
+import patient_icon from "./patient_icon.svg";
 
 export const assets = {
   add_icon,
@@ -26,4 +28,6 @@ export const assets = {
   tick_icon,
   appointments_icon,
   earning_icon,
+  invoice_icon,
+  patient_icon,
 };

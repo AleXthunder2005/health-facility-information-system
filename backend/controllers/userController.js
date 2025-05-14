@@ -341,6 +341,54 @@ const verifyStripe = async (req, res) => {
   }
 };
 
+// API для получения рекомендаций по лучшему времени записи к доктору
+const getDoctorRecommendedSlots = async (req, res) => {
+  try {
+    const { docId } = req.body;
+    
+    // Получаем текущую дату и дату неделю назад
+    const currentDate = new Date();
+    const oneWeekAgo = new Date();
+    oneWeekAgo.setDate(currentDate.getDate() - 7);
+    
+    // Получаем все приемы данного врача за прошлую неделю
+    const appointments = await appointmentModel.find({ 
+      docId, 
+      date: { $gte: oneWeekAgo.getTime(), $lte: currentDate.getTime() },
+      isCompleted: true,
+      cancelled: false
+    });
+    
+    // Создаем карту популярности временных слотов
+    const timeSlotFrequency = {};
+    
+    appointments.forEach(appointment => {
+      const timeSlot = appointment.slotTime;
+      if (!timeSlotFrequency[timeSlot]) {
+        timeSlotFrequency[timeSlot] = 1;
+      } else {
+        timeSlotFrequency[timeSlot]++;
+      }
+    });
+    
+    // Сортируем слоты по популярности
+    const popularTimeSlots = Object.keys(timeSlotFrequency)
+      .map(time => ({ time, frequency: timeSlotFrequency[time] }))
+      .sort((a, b) => b.frequency - a.frequency)
+      .slice(0, 3); // Берем топ-3 популярных слота
+    
+    res.json({ 
+      success: true, 
+      recommendedSlots: popularTimeSlots,
+      message: "Получены рекомендуемые временные слоты на основе истории посещений" 
+    });
+    
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
+
 export {
   loginUser,
   registerUser,
@@ -353,4 +401,5 @@ export {
   verifyRazorpay,
   paymentStripe,
   verifyStripe,
+  getDoctorRecommendedSlots
 };

@@ -14,6 +14,8 @@ const AdminContextProvider = (props) => {
   const [appointments, setAppointments] = useState([]);
   const [doctors, setDoctors] = useState([]);
   const [dashData, setDashData] = useState(false);
+  const [doctorPatients, setDoctorPatients] = useState([]);
+  const [selectedDoctor, setSelectedDoctor] = useState(null);
 
   // Getting all Doctors data from Database using API
   const getAllDoctors = async () => {
@@ -108,6 +110,30 @@ const AdminContextProvider = (props) => {
     }
   };
 
+  // Getting patients data for a specific doctor
+  const getDoctorPatients = async (docId) => {
+    try {
+      const { data } = await axios.post(
+        backendUrl + "/api/admin/doctor-patients",
+        { docId },
+        { headers: { aToken } }
+      );
+
+      if (data.success) {
+        setDoctorPatients(data.patients);
+        setSelectedDoctor(data.doctor);
+        return { success: true, doctor: data.doctor, patients: data.patients };
+      } else {
+        toast.error(data.message);
+        return { success: false, message: data.message };
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
+      return { success: false, message: error.message };
+    }
+  };
+
   const value = {
     aToken,
     setAToken,
@@ -119,6 +145,9 @@ const AdminContextProvider = (props) => {
     getDashData,
     cancelAppointment,
     dashData,
+    getDoctorPatients,
+    doctorPatients,
+    selectedDoctor,
   };
 
   return (

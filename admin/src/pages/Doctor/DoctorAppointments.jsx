@@ -1,8 +1,9 @@
 import React from "react";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { DoctorContext } from "../../context/DoctorContext";
 import { AppContext } from "../../context/AppContext";
 import { assets } from "../../assets/assets";
+import InvoiceModal from "../../components/InvoiceModal";
 
 const DoctorAppointments = () => {
   const {
@@ -13,12 +14,19 @@ const DoctorAppointments = () => {
     completeAppointment,
   } = useContext(DoctorContext);
   const { slotDateFormat, calculateAge, currency } = useContext(AppContext);
+  const [showInvoiceModal, setShowInvoiceModal] = useState(false);
+  const [selectedAppointment, setSelectedAppointment] = useState(null);
 
   useEffect(() => {
     if (dToken) {
       getAppointments();
     }
   }, [dToken]);
+
+  const handleSendInvoice = (appointment) => {
+    setSelectedAppointment(appointment);
+    setShowInvoiceModal(true);
+  };
 
   return (
     <div className="w-full max-w-6xl m-5 ">
@@ -63,7 +71,16 @@ const DoctorAppointments = () => {
             {item.cancelled ? (
               <p className="text-red-400 text-xs font-medium">Отменено</p>
             ) : item.isCompleted ? (
-              <p className="text-green-500 text-xs font-medium">Завершено</p>
+              <div className="flex items-center">
+                <p className="text-green-500 text-xs font-medium mr-2">Завершено</p>
+                <img
+                  onClick={() => handleSendInvoice(item)}
+                  className="w-8 cursor-pointer"
+                  src={assets.invoice_icon}
+                  alt="Отправить инвойс"
+                  title="Отправить инвойс"
+                />
+              </div>
             ) : (
               <div className="flex">
                 <img
@@ -83,6 +100,14 @@ const DoctorAppointments = () => {
           </div>
         ))}
       </div>
+
+      {showInvoiceModal && (
+        <InvoiceModal
+          isOpen={showInvoiceModal}
+          onClose={() => setShowInvoiceModal(false)}
+          appointmentData={selectedAppointment}
+        />
+      )}
     </div>
   );
 };

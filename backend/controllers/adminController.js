@@ -189,6 +189,72 @@ const adminDashboard = async (req, res) => {
   }
 };
 
+// API для получения списка пациентов конкретного врача для админа
+const getDoctorPatientsByAdmin = async (req, res) => {
+  try {
+    const { docId } = req.body;
+    
+    // Проверка на существование врача
+    const doctor = await doctorModel.findById(docId);
+    if (!doctor) {
+      return res.json({ success: false, message: "Врач не найден" });
+    }
+    
+    // Получаем все приемы данного врача
+    const appointments = await appointmentModel.find({ docId });
+    
+    // Создаем мапу для хранения информации о пациентах
+    const patientsMap = new Map();
+    
+    // Проходим по всем приемам и группируем информацию по пациентам
+    appointments.forEach(appointment => {
+      const { userId, userData } = appointment;
+      
+      if (!patientsMap.has(userId)) {
+        // Если пациент встречается впервые, создаем запись
+        patientsMap.set(userId, {
+          userId,
+          userData,
+          totalAppointments: 1,
+          completedAppointments: appointment.isCompleted ? 1 : 0,
+          cancelledAppointments: appointment.cancelled ? 1 : 0,
+          lastAppointmentDate: appointment.date,
+          appointments: [appointment],
+        });
+      } else {
+        // Иначе обновляем существующую запись
+        const patientData = patientsMap.get(userId);
+        patientData.totalAppointments += 1;
+        if (appointment.isCompleted) patientData.completedAppointments += 1;
+        if (appointment.cancelled) patientData.cancelledAppointments += 1;
+        if (appointment.date > patientData.lastAppointmentDate) {
+          patientData.lastAppointmentDate = appointment.date;
+        }
+        patientData.appointments.push(appointment);
+      }
+    });
+    
+    // Преобразуем мапу в массив и сортируем по количеству завершенных приемов (по убыванию)
+    let patientsList = Array.from(patientsMap.values())
+      .sort((a, b) => b.completedAppointments - a.completedAppointments);
+    
+    res.json({ 
+      success: true, 
+      doctor: {
+        name: doctor.name,
+        speciality: doctor.speciality,
+        _id: doctor._id
+      },
+      patients: patientsList,
+      totalPatients: patientsList.length
+    });
+    
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
+
 export {
   loginAdmin,
   appointmentsAdmin,
@@ -196,4 +262,5 @@ export {
   addDoctor,
   allDoctors,
   adminDashboard,
+  getDoctorPatientsByAdmin,
 };
