@@ -89,9 +89,9 @@ const DoctorDashboard = () => {
                   </p>
                 </div>
                 <div className="w-[20%]">
-                  <p className="border border-primary max-w-max px-2 rounded-full text-xs">
+                  {/* <p className="border border-primary max-w-max px-2 rounded-full text-xs">
                     {item.payment ? "Online" : "CASH"}
-                  </p>
+                  </p> */}
                 </div>
                 <div className="w-[20%]">
                   <p>

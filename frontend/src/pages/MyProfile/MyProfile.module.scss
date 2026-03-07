@@ -1,0 +1,102 @@
+.myprofile {
+  &__container {
+    max-width: 32rem;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+    font-size: 0.875rem;
+    padding-top: var(--spacing-md);
+  }
+
+  &__imageEdit {
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+  }
+
+  &__image {
+    width: 9rem;
+    border-radius: var(--radius-md);
+    opacity: 0.75;
+  }
+
+  &__uploadIcon {
+    width: 2.5rem;
+    position: absolute;
+    bottom: 3rem;
+    right: 3rem;
+  }
+
+  &__nameInput {
+    background-color: #f9fafb;
+    font-size: 1.875rem;
+    font-weight: 500;
+    max-width: 15rem;
+  }
+
+  &__name {
+    font-weight: 500;
+    font-size: 1.875rem;
+    color: var(--color-text-primary);
+    margin-top: var(--spacing-md);
+  }
+
+  &__divider {
+    background-color: var(--color-border-input);
+    height: 1px;
+    border: none;
+  }
+
+  &__section {
+    // no specific
+  }
+
+  &__sectionTitle {
+    color: var(--color-text-gray-600);
+    text-decoration: underline;
+    margin-top: var(--spacing-sm);
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    gap: var(--spacing-xs) 0;
+    margin-top: var(--spacing-sm);
+    color: var(--color-text-subtle);
+  }
+
+  &__label {
+    font-weight: 500;
+  }
+
+  &__value {
+    color: var(--color-primary);
+  }
+
+  &__input {
+    background-color: #f9fafb;
+    max-width: 13rem;
+  }
+
+  &__select {
+    max-width: 5rem;
+    background-color: #f9fafb;
+  }
+
+  &__actions {
+    margin-top: var(--spacing-2xl);
+  }
+
+  &__button {
+    border: 1px solid var(--color-primary);
+    padding: var(--spacing-xs) var(--spacing-xl);
+    border-radius: var(--radius-full);
+    transition: all var(--transition-fast);
+    cursor: pointer;
+
+    &:hover {
+      background-color: var(--color-primary);
+      color: var(--color-bg-white);
+    }
+  }
+}

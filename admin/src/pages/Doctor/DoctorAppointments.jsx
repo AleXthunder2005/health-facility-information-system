@@ -36,7 +36,7 @@ const DoctorAppointments = () => {
         <div className="max-sm:hidden grid grid-cols-[0.5fr_2fr_1fr_1fr_3fr_1fr_1fr] gap-1 py-3 px-6 border-b">
           <p>#</p>
           <p>Пациент</p>
-          <p>Оплата</p>
+          {/* <p>Оплата</p> */}
           <p>Возрост</p>
           <p>Время записи</p>
           <p>Стоимость</p>
@@ -49,18 +49,18 @@ const DoctorAppointments = () => {
           >
             <p className="max-sm:hidden">{index}</p>
             <div className="flex items-center gap-2">
-              <img
+              {/* <img
                 src={item.userData.image}
                 className="w-8 rounded-full"
                 alt=""
-              />{" "}
+              />{" "} */}
               <p>{item.userData.name}</p>
             </div>
-            <div>
+            {/* <div>
               <p className="text-xs inline border border-primary px-2 rounded-full">
-                {item.payment ? "Online" : "CASH"}
+                
               </p>
-            </div>
+            </div> */}
             <p className="max-sm:hidden">{calculateAge(item.userData.dob)}</p>
             <p>
               {slotDateFormat(item.slotDate)}, {item.slotTime}

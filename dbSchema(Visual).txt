@@ -1,0 +1,80 @@
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+
+Table User {
+  UserId uuid [primary key]
+  FirstName varchar(50)
+  LastName varchar(50)
+  Email varchar(100)
+  Image text
+  Password varchar(255)
+  Gender varchar(10)
+  dob date
+  RoleId uuid
+  DoctorInfoId uuid
+  AddressId uuid
+}
+
+Table DoctorInfo {
+  DoctorInfoId uuid [primary key]
+  DoctorTypeId uuid
+  Price decimal(10,2)
+}
+
+Table DoctorType {
+  DoctorTypeId uuid [primary key]
+  Title varchar(100)
+}
+
+Table Address {
+  AddressId uuid [primary key]
+  City varchar(100)
+  Street varchar(100)
+  Building varchar(50)
+}
+
+Table Appointment {
+  AppointmentId uuid [primary key]
+  AppointmentStatusId uuid
+  PatientId uuid
+  DoctorId uuid
+}
+
+Table AppointmentStatus {
+  AppointmentStatusId uuid [primary key]
+  Label varchar(50)
+}
+
+Table Slot {
+  SlotId uuid [primary key]
+  DoctorId uuid
+  AppointmentId uuid
+  StartTime timestamp
+  EndTime timestamp
+  IsBooked boolean
+}
+
+Table Payment {
+  PaymentId uuid [primary key]
+  AppointmentId uuid
+  Amount decimal(10,2)
+  IsCompleted boolean
+  IsInvoiceSent boolean
+}
+
+Table Role {
+  RoleId uuid [primary key]
+  Name varchar(50)
+}
+
+// Relationships
+Ref: User.DoctorInfoId > DoctorInfo.DoctorInfoId
+Ref: DoctorInfo.DoctorTypeId > DoctorType.DoctorTypeId
+Ref: Appointment.AppointmentStatusId > AppointmentStatus.AppointmentStatusId
+Ref: Appointment.PatientId > User.UserId
+Ref: Appointment.DoctorId > User.UserId
+Ref: Payment.AppointmentId > Appointment.AppointmentId
+Ref: User.AddressId > Address.AddressId
+Ref: Slot.DoctorId > User.UserId
+Ref: Slot.AppointmentId > Appointment.AppointmentId
+Ref: User.RoleId > Role.RoleId

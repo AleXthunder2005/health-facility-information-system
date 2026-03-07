@@ -1,0 +1,53 @@
+.specialitymenu {
+  &__container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding-top: var(--spacing-3xl);
+    color: var(--color-text-primary);
+  }
+
+  &__title {
+    font-size: 1.875rem;
+    font-weight: 500;
+  }
+
+  &__list {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-md);
+    padding-top: var(--spacing-md);
+    width: 100%;
+    overflow-scroll: auto;
+
+    @media (min-width: 640px) {
+      justify-content: center;
+    }
+  }
+
+  &__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 1rem;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: transform var(--transition-base);
+    text-decoration: none;
+    color: inherit;
+
+    &:hover {
+      transform: translateY(-10px);
+    }
+  }
+
+  &__image {
+    width: 4rem;
+    margin-bottom: var(--spacing-xs);
+
+    @media (min-width: 640px) {
+      width: 6rem;
+    }
+  }
+}

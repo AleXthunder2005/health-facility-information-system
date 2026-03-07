@@ -13,14 +13,12 @@ const DoctorPatientsAdmin = () => {
   const [selectedDoctorId, setSelectedDoctorId] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  // Загрузка списка врачей при монтировании
   useEffect(() => {
     if (aToken) {
       getAllDoctors();
     }
   }, [aToken]);
 
-  // Обработчик выбора врача
   const handleDoctorSelect = async (doctorId) => {
     if (!doctorId) return;
     
@@ -28,23 +26,19 @@ const DoctorPatientsAdmin = () => {
     setSelectedDoctorId(doctorId);
     await getDoctorPatients(doctorId);
     setIsLoading(false);
-    // Сбрасываем поиск пациентов при выборе нового врача
     setPatientSearchTerm("");
   };
 
-  // Фильтрация врачей по поисковому запросу
   const filteredDoctors = doctors.filter(doctor => 
     doctor.name.toLowerCase().includes(doctorSearchTerm.toLowerCase()) ||
     doctor.speciality.toLowerCase().includes(doctorSearchTerm.toLowerCase())
   );
 
-  // Фильтрация пациентов по поисковому запросу
   const filteredPatients = doctorPatients.filter(patient => 
     patient.userData.name.toLowerCase().includes(patientSearchTerm.toLowerCase()) ||
     (patient.userData.email && patient.userData.email.toLowerCase().includes(patientSearchTerm.toLowerCase()))
   );
 
-  // Сортировка пациентов по выбранному критерию
   const sortedPatients = [...filteredPatients].sort((a, b) => {
     switch (sortOption) {
       case "completedAppointments":
@@ -84,7 +78,7 @@ const DoctorPatientsAdmin = () => {
                 className={`border p-4 rounded-lg cursor-pointer transition-all hover:border-primary ${selectedDoctorId === doctor._id ? 'border-primary bg-[#F2F3FF]' : ''}`}
               >
                 <div className="flex items-center gap-3">
-                  <img src={doctor.image} alt={doctor.name} className="w-12 h-12 rounded-full" />
+                  <img src={import.meta.env.VITE_BACKEND_URL + "/images/" + doctor.image} alt={doctor.name} className="w-12 h-12 rounded-full" />
                   <div>
                     <h3 className="font-medium">{doctor.name}</h3>
                     <p className="text-sm text-gray-600">{doctor.speciality}</p>
@@ -153,11 +147,6 @@ const DoctorPatientsAdmin = () => {
                   >
                     <p>{index + 1}</p>
                     <div className="flex items-center gap-2">
-                      <img
-                        src={patient.userData.image}
-                        className="w-8 h-8 rounded-full"
-                        alt=""
-                      />
                       <div>
                         <p className="font-medium text-gray-700">{patient.userData.name}</p>
                         <p className="text-xs text-gray-500">{patient.userData.email || "Нет email"}</p>

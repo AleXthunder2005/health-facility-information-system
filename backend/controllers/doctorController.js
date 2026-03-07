@@ -208,25 +208,15 @@ const doctorDashboard = async (req, res) => {
 const sendInvoiceToPatient = async (req, res) => {
   try {
     const { appointmentId, additionalText } = req.body;
-    
-    // Находим запись о приеме в базе данных
     const appointment = await appointmentModel.findById(appointmentId);
-    
     if (!appointment) {
       return res.json({ success: false, message: "Запись на прием не найдена" });
     }
-    
-    // Проверяем наличие email в данных пользователя
     if (!appointment.userData.email) {
       return res.json({ success: false, message: "Email пациента не найден" });
     }
-    
-    // Генерируем инвойс (в простом формате)
     const invoiceBuffer = await generateSimpleInvoice(appointment);
-    
-    // Отправляем email с инвойсом
     const emailResult = await sendInvoiceEmail(appointment, invoiceBuffer, additionalText);
-    
     if (emailResult.success) {
       return res.json({ 
         success: true, 

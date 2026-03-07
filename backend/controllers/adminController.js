@@ -95,12 +95,12 @@ const addDoctor = async (req, res) => {
     }
 
     // validating strong password
-    if (password.length < 8) {
-      return res.json({
-        success: false,
-        message: "Please enter a strong password",
-      });
-    }
+    // if (password.length < 8) {
+    //   return res.json({
+    //     success: false,
+    //     message: "Please enter a strong password",
+    //   });
+    // }
 
     // Define image path
     const imageName = `${Date.now()}-${imageFile.originalname}`;
@@ -178,6 +178,7 @@ const adminDashboard = async (req, res) => {
     const dashData = {
       doctors: doctors.length,
       appointments: appointments.length,
+      allAppointments: appointments,
       patients: users.length,
       latestAppointments: appointments.reverse(),
     };

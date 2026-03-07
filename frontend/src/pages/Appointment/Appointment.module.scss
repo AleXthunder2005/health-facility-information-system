@@ -1,0 +1,179 @@
+.appointment {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &__doctor {
+    display: flex;
+    gap: 16px;
+    width: 100%;
+    max-width: 1152px;
+
+    @media (max-width: 640px) {
+      flex-direction: column;
+    }
+  }
+
+  &__image {
+    background: var(--primary);
+    width: 100%;
+    max-width: 288px;
+    border-radius: 8px;
+  }
+
+  &__card {
+    flex: 1;
+    border: 1px solid #adadad;
+    border-radius: 8px;
+    padding: 32px;
+    background: white;
+    margin: 0 8px;
+  }
+
+  &__name {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 30px;
+    font-weight: 500;
+    color: #374151;
+  }
+
+  &__verified {
+    width: 20px;
+  }
+
+  &__degree {
+    display: flex;
+    gap: 8px;
+    margin-top: 4px;
+    color: #4b5563;
+  }
+
+  &__experience {
+    padding: 2px 8px;
+    border: 1px solid #ddd;
+    font-size: 12px;
+    border-radius: 999px;
+  }
+
+  &__aboutTitle {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    margin-top: 12px;
+  }
+
+  &__infoIcon {
+    width: 12px;
+  }
+
+  &__aboutText {
+    font-size: 14px;
+    color: #4b5563;
+    margin-top: 4px;
+    max-width: 700px;
+  }
+
+  &__price {
+    margin-top: 16px;
+    color: #4b5563;
+    font-weight: 500;
+
+    span {
+      color: #1f2937;
+      margin-left: 4px;
+    }
+  }
+
+  &__booking {
+    margin-top: 32px;
+    text-align: center;
+    width: 100%;
+    max-width: 1152px;
+    color: #565656;
+  }
+
+  &__recommended {
+    margin-top: 8px;
+    color: var(--primary);
+    font-size: 14px;
+  }
+
+  &__recommendedList {
+    display: flex;
+    gap: 8px;
+    margin-top: 4px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  &__recommendedItem {
+    padding: 4px 8px;
+    background: #eff6ff;
+    border: 1px solid var(--primary);
+    border-radius: 999px;
+    font-size: 12px;
+  }
+
+  &__days {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    margin-top: 16px;
+    justify-content: center;
+  }
+
+  &__day {
+    text-align: center;
+    padding: 24px 0;
+    min-width: 64px;
+    border-radius: 999px;
+    cursor: pointer;
+    border: 1px solid #ddd;
+  }
+
+  &__times {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    margin-top: 20px;
+    justify-content: center;
+  }
+
+  &__time {
+    font-size: 14px;
+    padding: 8px 20px;
+    border-radius: 999px;
+    border: 1px solid #b4b4b4;
+    color: #949494;
+    cursor: pointer;
+  }
+
+  &__button {
+    margin: 24px 0;
+    background: var(--primary);
+    color: white;
+    padding: 12px 80px;
+    border-radius: 999px;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+  }
+
+  &__related {
+    width: 100%;
+    max-width: 1152px;
+  }
+}
+
+.active {
+  background: var(--primary);
+  color: white;
+}
+
+.recommended {
+  border: 2px solid var(--primary);
+}

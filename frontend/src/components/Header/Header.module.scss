@@ -1,0 +1,128 @@
+.header {
+  &__container {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    background-color: var(--color-primary);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+
+    @media (min-width: 768px) {
+      flex-direction: row;
+      padding: var(--spacing-xl) var(--spacing-2xl);
+    }
+
+    @media (min-width: 1024px) {
+      padding: var(--spacing-xl) var(--spacing-4xl);
+    }
+  }
+
+  &__left {
+    @media (min-width: 768px) {
+      width: 50%;
+    }
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: var(--spacing-md);
+    padding: var(--spacing-xl) 0;
+    margin: auto;
+
+    @media (min-width: 768px) {
+      padding: 5vw 0;
+      margin-bottom: -20px;
+    }
+  }
+
+  &__title {
+    font-size: 1.875rem;
+    color: var(--color-bg-white);
+    font-weight: 600;
+    line-height: 1.25;
+
+    @media (min-width: 768px) {
+      font-size: 2.25rem;
+      line-height: 1.2;
+    }
+
+    @media (min-width: 1024px) {
+      font-size: 3rem;
+      line-height: 1.1;
+    }
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-sm);
+    color: var(--color-bg-white);
+    font-size: 0.875rem;
+    font-weight: 300;
+
+    @media (min-width: 768px) {
+      flex-direction: row;
+    }
+
+    img {
+      width: 7rem;
+    }
+
+    p {
+      br {
+        @media (min-width: 640px) {
+          display: block;
+        }
+
+        @media (max-width: 639px) {
+          display: none;
+        }
+      }
+    }
+  }
+
+  &__button {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    background-color: var(--color-bg-white);
+    padding: var(--spacing-sm) var(--spacing-xl);
+    border-radius: var(--radius-full);
+    color: var(--color-text-lighter);
+    font-size: 0.875rem;
+    margin: auto;
+    text-decoration: none;
+    transition: transform var(--transition-fast);
+
+    @media (min-width: 768px) {
+      margin: 0;
+    }
+
+    &:hover {
+      transform: scale(1.05);
+    }
+
+    img {
+      width: 0.75rem;
+    }
+  }
+
+  &__right {
+    @media (min-width: 768px) {
+      width: 50%;
+      position: relative;
+    }
+  }
+
+  &__image {
+    width: 100%;
+    border-radius: var(--radius-lg);
+
+    @media (min-width: 768px) {
+      position: absolute;
+      bottom: 0;
+      height: auto;
+    }
+  }
+}

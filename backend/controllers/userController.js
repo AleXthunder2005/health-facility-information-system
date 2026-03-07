@@ -33,12 +33,12 @@ const registerUser = async (req, res) => {
     }
 
     // validating strong password
-    if (password.length < 8) {
-      return res.json({
-        success: false,
-        message: "Please enter a strong password",
-      });
-    }
+    // if (password.length < 8) {
+    //   return res.json({
+    //     success: false,
+    //     message: "Please enter a strong password",
+    //   });
+    // }
 
     // hashing user password
     const salt = await bcrypt.genSalt(10); // the more no. round the more time it will take
@@ -68,7 +68,7 @@ const loginUser = async (req, res) => {
     const user = await userModel.findOne({ email });
 
     if (!user) {
-      return res.json({ success: false, message: "User does not exist" });
+      return res.json({ success: false, message: "Пользователя с такими данными не существует в системе" });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
@@ -349,7 +349,7 @@ const getDoctorRecommendedSlots = async (req, res) => {
     // Получаем текущую дату и дату неделю назад
     const currentDate = new Date();
     const oneWeekAgo = new Date();
-    oneWeekAgo.setDate(currentDate.getDate() - 7);
+    oneWeekAgo.setDate(currentDate.getDate() - 60);
     
     // Получаем все приемы данного врача за прошлую неделю
     const appointments = await appointmentModel.find({ 

@@ -1,0 +1,250 @@
+.doctors {
+  &__booking {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-md);
+    margin: var(--spacing-md) 0;
+
+    @media (min-width: 640px) {
+      flex-direction: row;
+    }
+  }
+
+  &__input {
+    border: 1px solid var(--color-border-light);
+    padding: var(--spacing-xs);
+    border-radius: var(--radius-md);
+    font-size: 0.875rem;
+  }
+
+  &__bookButton {
+    background-color: #3b82f6;
+    color: var(--color-bg-white);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--radius-md);
+    border: none;
+    cursor: pointer;
+    transition: background-color var(--transition-fast);
+
+    &:hover {
+      background-color: #2563eb;
+    }
+  }
+
+  &__description {
+    color: var(--color-text-gray-600);
+  }
+
+  &__dialog {
+    position: fixed;
+    z-index: 10;
+    inset: 0;
+    overflow-y: auto;
+  }
+
+  &__dialogOverlay {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: var(--spacing-md);
+  }
+
+  &__dialogBackdrop {
+    position: fixed;
+    inset: 0;
+    background-color: var(--color-bg-black);
+    opacity: 0.3;
+  }
+
+  &__dialogContent {
+    background-color: var(--color-bg-white);
+    padding: var(--spacing-xl);
+    border-radius: var(--radius-lg);
+    z-index: 20;
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 28rem;
+  }
+
+  &__dialogTitle {
+    font-size: 1.125rem;
+    font-weight: 700;
+    margin-bottom: var(--spacing-md);
+  }
+
+  &__dialogInfo {
+    margin-bottom: var(--spacing-md);
+  }
+
+  &__dialogActions {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--spacing-xs);
+  }
+
+  &__dialogCancel {
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-md);
+    font-size: 0.875rem;
+    cursor: pointer;
+  }
+
+  &__dialogConfirm {
+    padding: var(--spacing-sm) var(--spacing-md);
+    background-color: var(--color-success);
+    color: var(--color-bg-white);
+    border-radius: var(--radius-md);
+    font-size: 0.875rem;
+    border: none;
+    cursor: pointer;
+    transition: background-color var(--transition-fast);
+
+    &:hover {
+      background-color: #16a34a;
+    }
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-xl);
+    margin-top: var(--spacing-xl);
+
+    @media (min-width: 640px) {
+      flex-direction: row;
+    }
+  }
+
+  &__filterButton {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-md);
+    font-size: 0.875rem;
+    transition: all var(--transition-base);
+    cursor: pointer;
+
+    @media (min-width: 640px) {
+      display: none;
+    }
+
+    &--active {
+      background-color: var(--color-primary);
+      color: var(--color-bg-white);
+    }
+  }
+
+  &__filters {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    font-size: 0.875rem;
+    color: var(--color-text-gray-600);
+
+    &--visible {
+      display: flex;
+    }
+
+    &--hidden {
+      display: none;
+
+      @media (min-width: 640px) {
+        display: flex;
+      }
+    }
+  }
+
+  &__filterItem {
+    width: 94vw;
+    padding-left: var(--spacing-sm);
+    padding: var(--spacing-xs) var(--spacing-4xl);
+    border: 1px solid var(--color-border-gray);
+    border-radius: var(--radius-md);
+    transition: all var(--transition-base);
+    cursor: pointer;
+
+    @media (min-width: 640px) {
+      width: auto;
+    }
+
+    &--active {
+      background-color: var(--color-primary-light);
+      color: var(--color-bg-black);
+    }
+  }
+
+  &__grid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: var(--spacing-md);
+    row-gap: var(--spacing-2xl);
+  }
+
+  &__card {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform var(--transition-base);
+
+    &:hover {
+      transform: translateY(-10px);
+    }
+  }
+
+  &__cardImage {
+    background-color: var(--color-primary-lighter);
+    height: 15rem;
+    object-fit: cover;
+  }
+
+  &__cardBody {
+    padding: var(--spacing-md);
+  }
+
+  &__status {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    font-size: 0.875rem;
+    text-align: center;
+
+    &--available {
+      color: var(--color-success);
+    }
+
+    &--unavailable {
+      color: var(--color-text-gray-600);
+    }
+  }
+
+  &__statusDot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: var(--radius-full);
+
+    &--available {
+      background-color: var(--color-success);
+    }
+
+    &--unavailable {
+      background-color: var(--color-text-gray-600);
+    }
+  }
+
+  &__cardName {
+    color: var(--color-text-primary);
+    font-size: 1.125rem;
+    font-weight: 500;
+    margin-top: var(--spacing-sm);
+  }
+
+  &__cardSpeciality {
+    color: var(--color-text-disabled);
+    font-size: 0.875rem;
+  }
+}

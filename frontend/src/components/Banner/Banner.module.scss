@@ -1,0 +1,99 @@
+.banner {
+  &__container {
+    display: flex;
+    background-color: var(--color-primary);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    margin: var(--spacing-4xl) 0;
+
+    @media (min-width: 768px) {
+      padding: var(--spacing-xl) var(--spacing-2xl);
+      margin: 0 var(--spacing-xl);
+    }
+
+    @media (min-width: 1024px) {
+      padding: var(--spacing-xl) var(--spacing-3xl);
+    }
+  }
+
+  &__left {
+    flex: 1;
+    padding: var(--spacing-xl) 0;
+
+    @media (min-width: 640px) {
+      padding: var(--spacing-xl) 0;
+    }
+
+    @media (min-width: 768px) {
+      padding: var(--spacing-2xl) 0;
+    }
+
+    @media (min-width: 1024px) {
+      padding: var(--spacing-3xl) 0 var(--spacing-4xl) var(--spacing-md);
+    }
+  }
+
+  &__text {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-bg-white);
+
+    @media (min-width: 640px) {
+      font-size: 1.5rem;
+    }
+
+    @media (min-width: 768px) {
+      font-size: 1.875rem;
+    }
+
+    @media (min-width: 1024px) {
+      font-size: 3rem;
+    }
+  }
+
+  &__subtitle {
+    margin-top: var(--spacing-md);
+  }
+
+  &__button {
+    background-color: var(--color-bg-white);
+    font-size: 0.875rem;
+    color: var(--color-text-lighter);
+    padding: var(--spacing-sm) var(--spacing-xl);
+    border-radius: var(--radius-full);
+    margin-top: var(--spacing-lg);
+    transition: transform var(--transition-fast);
+    border: none;
+    cursor: pointer;
+
+    @media (min-width: 640px) {
+      font-size: 1rem;
+    }
+
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
+
+  &__right {
+    display: none;
+
+    @media (min-width: 768px) {
+      display: block;
+      width: 50%;
+      position: relative;
+    }
+
+    @media (min-width: 1024px) {
+      width: 370px;
+    }
+  }
+
+  &__image {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    max-width: 28rem;
+  }
+}
