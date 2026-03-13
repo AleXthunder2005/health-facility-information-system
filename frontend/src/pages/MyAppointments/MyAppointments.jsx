@@ -15,7 +15,7 @@ const MyAppointments = () => {
     const [appointments, setAppointments] = useState([])
     const [payment, setPayment] = useState('')
 
-    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const months = ["января","февраля","марта","апреля","мая","июня","июля","августа","сентября","октября","ноября","декабря"];
 
     const getSpecialityLabel = (speciality) => {
         const foundSpeciality = specialityData.find(
@@ -24,18 +24,19 @@ const MyAppointments = () => {
         return foundSpeciality ? foundSpeciality.label : "Unknown";
     }
 
-
-    // Function to format the date eg. ( 20_01_2000 => 20 Jan 2000 )
     const slotDateFormat = (slotDate) => {
         const dateArray = slotDate.split('_')
         return dateArray[0] + " " + months[Number(dateArray[1])] + " " + dateArray[2]
     }
 
-    // Getting User Appointments Data Using API
     const getUserAppointments = async () => {
         try {
 
-            const { data } = await axios.get(backendUrl + '/api/user/appointments', { headers: { token } })
+            const { data } = await axios.get(
+                backendUrl + '/api/user/appointments',
+                { headers: { token } }
+            )
+
             setAppointments(data.appointments.reverse())
 
         } catch (error) {
@@ -44,12 +45,15 @@ const MyAppointments = () => {
         }
     }
 
-    // Function to cancel appointment Using API
     const cancelAppointment = async (appointmentId) => {
 
         try {
 
-            const { data } = await axios.post(backendUrl + '/api/user/cancel-appointment', { appointmentId }, { headers: { token } })
+            const { data } = await axios.post(
+                backendUrl + '/api/user/cancel-appointment',
+                { appointmentId },
+                { headers: { token } }
+            )
 
             if (data.success) {
                 toast.success(data.message)
@@ -66,6 +70,7 @@ const MyAppointments = () => {
     }
 
     const initPay = (order) => {
+
         const options = {
             key: import.meta.env.VITE_RAZORPAY_KEY_ID,
             amount: order.amount,
@@ -76,56 +81,78 @@ const MyAppointments = () => {
             receipt: order.receipt,
             handler: async (response) => {
 
-                console.log(response)
-
                 try {
-                    const { data } = await axios.post(backendUrl + "/api/user/verifyRazorpay", response, { headers: { token } });
+
+                    const { data } = await axios.post(
+                        backendUrl + "/api/user/verifyRazorpay",
+                        response,
+                        { headers: { token } }
+                    );
+
                     if (data.success) {
                         navigate('/my-appointments')
                         getUserAppointments()
                     }
+
                 } catch (error) {
                     console.log(error)
                     toast.error(error.message)
                 }
+
             }
         };
+
         const rzp = new window.Razorpay(options);
         rzp.open();
+
     };
 
-    // Function to make payment using razorpay
     const appointmentRazorpay = async (appointmentId) => {
+
         try {
-            const { data } = await axios.post(backendUrl + '/api/user/payment-razorpay', { appointmentId }, { headers: { token } })
+
+            const { data } = await axios.post(
+                backendUrl + '/api/user/payment-razorpay',
+                { appointmentId },
+                { headers: { token } }
+            )
+
             if (data.success) {
                 initPay(data.order)
-            }else{
+            } else {
                 toast.error(data.message)
             }
+
         } catch (error) {
             console.log(error)
             toast.error(error.message)
         }
+
     }
 
-    // Function to make payment using stripe
     const appointmentStripe = async (appointmentId) => {
+
         try {
-            const { data } = await axios.post(backendUrl + '/api/user/payment-stripe', { appointmentId }, { headers: { token } })
+
+            const { data } = await axios.post(
+                backendUrl + '/api/user/payment-stripe',
+                { appointmentId },
+                { headers: { token } }
+            )
+
             if (data.success) {
                 const { session_url } = data
                 window.location.replace(session_url)
-            }else{
+            } else {
                 toast.error(data.message)
             }
+
         } catch (error) {
             console.log(error)
             toast.error(error.message)
         }
+
     }
-
-
 
     useEffect(() => {
         if (token) {
@@ -134,38 +161,129 @@ const MyAppointments = () => {
     }, [token])
 
     return (
-        <div className={styles["myAppointments"]}>
-            <p className={`pb-3 mt-12 text-lg font-medium text-gray-600 border-b ${styles["myAppointments__title"]}`}>Мои записи</p>
-            <div className={styles["myAppointments__list"]}>
-                {appointments.map((item, index) => (
-                    <div key={index} className={`grid grid-cols-[1fr_2fr] gap-4 sm:flex sm:gap-6 py-4 border-b ${styles["myAppointments__item"]}`}>
-                        <div className={styles["myAppointments__imageContainer"]}>
-                            <img className={`w-36 bg-[#EAEFFF] ${styles["myAppointments__doctorImage"]}`} src={import.meta.env.VITE_BACKEND_URL + "/images/" + item.docData.image} alt="" />
-                        </div>
-                        <div className={`flex-1 text-sm text-[#5E5E5E] ${styles["myAppointments__info"]}`}>
-                            <p className={`text-[#262626] text-base font-semibold ${styles["myAppointments__doctorName"]}`}>{item.docData.name}</p>
-                            <p className={styles["myAppointments__doctorSpeciality"]}>{getSpecialityLabel(item.docData.speciality)}</p>
-                            <p className={`text-[#464646] font-medium mt-1 ${styles["myAppointments__addressLabel"]}`}>Адрес:</p>
-                            <p className={styles["myAppointments__addressLine"]}>{item.docData.address.line1}</p>
-                            <p className={styles["myAppointments__addressLine"]}>{item.docData.address.line2}</p>
-                            <p className={`mt-1 ${styles["myAppointments__dateTime"]}`}><span className={`text-sm text-[#3C3C3C] font-medium ${styles["myAppointments__dateTimeLabel"]}`}>Время:</span> {slotDateFormat(item.slotDate)} |  {item.slotTime}</p>
-                        </div>
-                        <div className={styles["myAppointments__emptyDiv"]}></div>
-                        <div className={`flex flex-col gap-2 justify-end text-sm text-center ${styles["myAppointments__actions"]}`}>
-                            {/* {!item.cancelled && !item.payment && !item.isCompleted && payment !== item._id && <button onClick={() => setPayment(item._id)} className='text-[#696969] sm:min-w-48 py-2 border rounded hover:bg-primary hover:text-white transition-all duration-300'>Pay Online</button>} */}
-                            {!item.cancelled && !item.payment && !item.isCompleted && payment === item._id && <button onClick={() => appointmentStripe(item._id)} className={`text-[#696969] sm:min-w-48 py-2 border rounded hover:bg-gray-100 hover:text-white transition-all duration-300 flex items-center justify-center ${styles["myAppointments__paymentButton"]}`}><img className={`max-w-20 max-h-5 ${styles["myAppointments__paymentLogo"]}`} src={assets.stripe_logo} alt="" /></button>}
-                            {!item.cancelled && !item.payment && !item.isCompleted && payment === item._id && <button onClick={() => appointmentRazorpay(item._id)} className={`text-[#696969] sm:min-w-48 py-2 border rounded hover:bg-gray-100 hover:text-white transition-all duration-300 flex items-center justify-center ${styles["myAppointments__paymentButton"]}`}><img className={`max-w-20 max-h-5 ${styles["myAppointments__paymentLogo"]}`} src={assets.razorpay_logo} alt="" /></button>}
-                            {!item.cancelled && item.payment && !item.isCompleted && <button className={`sm:min-w-48 py-2 border rounded text-[#696969] bg-[#EAEFFF] ${styles["myAppointments__paidButton"]}`}>Оплачено</button>}
 
-                            {item.isCompleted && <button className={`sm:min-w-48 py-2 border border-green-500 rounded text-green-500 ${styles["myAppointments__completedButton"]}`}>Завершен</button>}
+        <section className="w-full px-4 md:px-10 lg:px-20 py-8">
 
-                            {!item.cancelled && !item.isCompleted && <button onClick={() => cancelAppointment(item._id)} className={`text-[#696969] sm:min-w-48 py-2 border rounded hover:bg-red-600 hover:text-white transition-all duration-300 ${styles["myAppointments__cancelButton"]}`}>Отменить запись</button>}
-                            {item.cancelled && !item.isCompleted && <button className={`sm:min-w-48 py-2 border border-red-500 rounded text-red-500 ${styles["myAppointments__cancelledButton"]}`}>Запись отменена</button>}
+            <div className="max-w-6xl mx-auto">
+
+                <h1 className="text-2xl font-semibold text-gray-900 mb-6">
+                    Мои записи
+                </h1>
+
+                <div className="space-y-4">
+
+                    {appointments.map((item, index) => (
+
+                        <div
+                            key={index}
+                            className={`bg-white border border-gray-200 rounded-2xl p-5 shadow-sm flex flex-col md:flex-row gap-5 ${styles["myAppointments__item"]}`}
+                        >
+
+                            <div className="w-full md:w-36 h-36 rounded-xl overflow-hidden bg-white flex items-center justify-center">
+
+                                <img
+                                    className="max-h-full object-contain"
+                                    src={
+                                        import.meta.env.VITE_BACKEND_URL +
+                                        "/images/" +
+                                        item.docData.image
+                                    }
+                                    alt=""
+                                />
+
+                            </div>
+
+                            <div className={`flex-1 text-sm text-gray-600 ${styles["myAppointments__info"]}`}>
+
+                                <p className="text-gray-900 text-base font-semibold">
+                                    {item.docData.name}
+                                </p>
+
+                                <p className="text-gray-500">
+                                    {getSpecialityLabel(item.docData.speciality)}
+                                </p>
+
+                                <p className="text-gray-700 font-medium mt-3">
+                                    Адрес:
+                                </p>
+
+                                <p>
+                                    {item.docData.address.line1}
+                                </p>
+
+                                <p>
+                                    {item.docData.address.line2}
+                                </p>
+
+                                <p className="mt-2">
+                                    <span className="font-medium text-gray-700">
+                                        Время:
+                                    </span>
+                                    {" "}
+                                    {slotDateFormat(item.slotDate)} | {item.slotTime}
+                                </p>
+
+                            </div>
+
+                            <div className="flex flex-col gap-2 justify-center md:items-end text-sm">
+
+                                {!item.cancelled && !item.payment && !item.isCompleted && payment === item._id &&
+                                    <button
+                                        onClick={() => appointmentStripe(item._id)}
+                                        className="px-5 py-2 border rounded-lg hover:bg-gray-50 flex items-center justify-center"
+                                    >
+                                        <img className="max-w-20 max-h-5" src={assets.stripe_logo} alt="" />
+                                    </button>
+                                }
+
+                                {!item.cancelled && !item.payment && !item.isCompleted && payment === item._id &&
+                                    <button
+                                        onClick={() => appointmentRazorpay(item._id)}
+                                        className="px-5 py-2 border rounded-lg hover:bg-gray-50 flex items-center justify-center"
+                                    >
+                                        <img className="max-w-20 max-h-5" src={assets.razorpay_logo} alt="" />
+                                    </button>
+                                }
+
+                                {!item.cancelled && item.payment && !item.isCompleted &&
+                                    <button className="px-5 py-2 rounded-lg bg-blue-50 text-blue-600">
+                                        Оплачено
+                                    </button>
+                                }
+
+                                {item.isCompleted &&
+                                    <button className="px-5 py-2 border border-green-500 rounded-lg text-green-600">
+                                        Завершен
+                                    </button>
+                                }
+
+                                {!item.cancelled && !item.isCompleted &&
+                                    <button
+                                        onClick={() => cancelAppointment(item._id)}
+                                        className="px-5 py-2 border rounded-lg hover:bg-red-600 hover:text-white transition"
+                                    >
+                                        Отменить запись
+                                    </button>
+                                }
+
+                                {item.cancelled && !item.isCompleted &&
+                                    <button className="px-5 py-2 border border-red-500 rounded-lg text-red-500">
+                                        Запись отменена
+                                    </button>
+                                }
+
+                            </div>
+
                         </div>
-                    </div>
-                ))}
+
+                    ))}
+
+                </div>
+
             </div>
-        </div>
+
+        </section>
+
     )
 }
 

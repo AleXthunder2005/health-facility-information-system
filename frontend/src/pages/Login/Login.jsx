@@ -1,84 +1,140 @@
-import { useContext, useEffect, useState } from 'react'
-import { AppContext } from '@context/AppContext'
-import axios from 'axios'
-import { toast } from 'react-toastify'
-import { useNavigate } from 'react-router-dom'
+import { useContext, useEffect, useState } from "react";
+import { AppContext } from "@context/AppContext";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 import styles from "./Login.module.scss";
 
 const Login = () => {
 
-  const [state, setState] = useState('Sign Up')
+  const [state, setState] = useState("Sign Up");
 
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const navigate = useNavigate()
-  const { backendUrl, token, setToken } = useContext(AppContext)
+  const navigate = useNavigate();
+  const { backendUrl, token, setToken } = useContext(AppContext);
 
   const onSubmitHandler = async (event) => {
     event.preventDefault();
 
-    if (state === 'Sign Up') {
+    if (state === "Sign Up") {
 
-      const { data } = await axios.post(backendUrl + '/api/user/register', { name, email, password })
+      const { data } = await axios.post(
+          backendUrl + "/api/user/register",
+          { name, email, password }
+      );
 
       if (data.success) {
-        localStorage.setItem('token', data.token)
-        setToken(data.token)
+        localStorage.setItem("token", data.token);
+        setToken(data.token);
       } else {
-        toast.error(data.message)
+        toast.error(data.message);
       }
 
     } else {
 
-      const { data } = await axios.post(backendUrl + '/api/user/login', { email, password })
+      const { data } = await axios.post(
+          backendUrl + "/api/user/login",
+          { email, password }
+      );
 
       if (data.success) {
-        localStorage.setItem('token', data.token)
-        setToken(data.token)
+        localStorage.setItem("token", data.token);
+        setToken(data.token);
       } else {
-        toast.error(data.message)
+        toast.error(data.message);
       }
 
     }
-
-  }
+  };
 
   useEffect(() => {
     if (token) {
-      navigate('/')
+      navigate("/");
     }
-  }, [token])
+  }, [token]);
 
   return (
-      <form onSubmit={onSubmitHandler} className={`min-h-[80vh] flex items-center ${styles["login"]}`}>
-        <div className={`flex flex-col gap-3 m-auto items-start p-8 min-w-[340px] sm:min-w-96 border rounded-xl text-[#5E5E5E] text-sm shadow-lg ${styles["login__container"]}`}>
-          <p className={`text-2xl font-semibold ${styles["login__title"]}`}>{state === 'Sign Up' ? 'Создать аккаунт' : 'Войти'}</p>
-          <p className={styles["login__subtitle"]}>Пожалуйста {state === 'Sign Up' ? 'зарегистрируйтесь' : 'войдите'} чтобы записаться на прием</p>
-          {state === 'Sign Up'
-              ? <div className={`w-full ${styles["login__field"]}`}>
-                <p className={styles["login__fieldLabel"]}>Полное имя</p>
-                <input onChange={(e) => setName(e.target.value)} value={name} className={`border border-[#DADADA] rounded w-full p-2 mt-1 ${styles["login__input"]}`} type="text" required />
-              </div>
-              : null
-          }
-          <div className={`w-full ${styles["login__field"]}`}>
-            <p className={styles["login__fieldLabel"]}>Электронный адрес</p>
-            <input onChange={(e) => setEmail(e.target.value)} value={email} className={`border border-[#DADADA] rounded w-full p-2 mt-1 ${styles["login__input"]}`} type="email" required />
-          </div>
-          <div className={`w-full ${styles["login__field"]}`}>
-            <p className={styles["login__fieldLabel"]}>Пароль</p>
-            <input onChange={(e) => setPassword(e.target.value)} value={password} className={`border border-[#DADADA] rounded w-full p-2 mt-1 ${styles["login__input"]}`} type="password" required />
-          </div>
-          <button className={`bg-primary text-white w-full py-2 my-2 rounded-md text-base ${styles["login__button"]}`}>{state === 'Sign Up' ? 'Зарегистрироваться' : 'Войти'}</button>
-          {state === 'Sign Up'
-              ? <p className={styles["login__toggle"]}>Уже есть аккаунт? <span onClick={() => setState('Login')} className={`text-primary underline cursor-pointer ${styles["login__toggleLink"]}`}>Войти</span></p>
-              : <p className={styles["login__toggle"]}>Создать новый аккаунт? <span onClick={() => setState('Sign Up')} className={`text-primary underline cursor-pointer ${styles["login__toggleLink"]}`}>Создать</span></p>
-          }
-        </div>
-      </form>
-  )
-}
+      <section className={`min-h-[80vh] flex items-center justify-center bg-gray-50 py-20 ${styles["login"]}`}>
 
-export default Login
+        <form
+            onSubmit={onSubmitHandler}
+            className={`flex flex-col gap-5 bg-white p-10 rounded-2xl shadow-lg w-full max-w-md ${styles["login__container"]}`}
+        >
+
+          {/* Заголовок */}
+          <div className="text-center">
+            <p className="text-3xl font-semibold text-gray-900">
+              {state === "Sign Up" ? "Создать аккаунт" : "Войти"}
+            </p>
+            <p className="text-gray-500 mt-2 text-sm">
+              Пожалуйста {state === "Sign Up" ? "зарегистрируйтесь" : "войдите"}, чтобы записаться на прием
+            </p>
+          </div>
+
+          {/* Имя */}
+          {state === "Sign Up" && (
+              <div className={`flex flex-col gap-1 ${styles["login__field"]}`}>
+                <label className="text-gray-600 text-sm">Полное имя</label>
+                <input
+                    type="text"
+                    required
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary transition"
+                />
+              </div>
+          )}
+
+          {/* Email */}
+          <div className={`flex flex-col gap-1 ${styles["login__field"]}`}>
+            <label className="text-gray-600 text-sm">Электронный адрес</label>
+            <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary transition"
+            />
+          </div>
+
+          {/* Password */}
+          <div className={`flex flex-col gap-1 ${styles["login__field"]}`}>
+            <label className="text-gray-600 text-sm">Пароль</label>
+            <input
+                type="password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary transition"
+            />
+          </div>
+
+          {/* Кнопка */}
+          <button
+              className="bg-primary text-white py-2.5 rounded-full font-medium hover:opacity-90 transition mt-2"
+          >
+            {state === "Sign Up" ? "Зарегистрироваться" : "Войти"}
+          </button>
+
+          {/* Переключение */}
+          <p className="text-sm text-gray-600 text-center">
+            {state === "Sign Up" ? "Уже есть аккаунт?" : "Создать новый аккаунт?"}{" "}
+            <span
+                onClick={() =>
+                    setState(state === "Sign Up" ? "Login" : "Sign Up")
+                }
+                className="text-primary cursor-pointer underline"
+            >
+            {state === "Sign Up" ? "Войти" : "Создать"}
+          </span>
+          </p>
+
+        </form>
+      </section>
+  );
+};
+
+export default Login;

@@ -1,17 +1,17 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { AppContext } from "@context/AppContext";
-import { assets } from "@assets/assets";
 import RelatedDoctors from "@components/RelatedDoctors/RelatedDoctors";
 import axios from "axios";
 import { toast } from "react-toastify";
-import styles from "./Appointment.module.scss";
 
 const Appointment = () => {
+
   const { docId } = useParams();
+  const navigate = useNavigate();
+
   const { doctors, currencySymbol, backendUrl, token, getDoctosData } =
       useContext(AppContext);
-  const daysOfWeek = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 
   const [docInfo, setDocInfo] = useState(false);
   const [docSlots, setDocSlots] = useState([]);
@@ -19,60 +19,66 @@ const Appointment = () => {
   const [slotTime, setSlotTime] = useState("");
   const [recommendedSlots, setRecommendedSlots] = useState([]);
 
-  const navigate = useNavigate();
+  const scrollRef = useRef(null);
 
-  const fetchDocInfo = async () => {
+  const daysOfWeek = ["ВС","ПН","ВТ","СР","ЧТ","ПТ","СБ"];
+
+  const fetchDocInfo = () => {
     const docInfo = doctors.find((doc) => doc._id === docId);
     setDocInfo(docInfo);
   };
 
-  // Получение рекомендуемых слотов на основе истории посещений
   const getRecommendedSlots = async () => {
     try {
+
       const { data } = await axios.post(
           backendUrl + "/api/user/doctor-recommended-slots",
           { docId }
       );
-      console.log("Рекомендуемые слоты:", data);
 
       if (data.success) {
-        setRecommendedSlots(data.recommendedSlots.map(slot => slot.time));
+        setRecommendedSlots(data.recommendedSlots.map((slot) => slot.time));
       }
+
     } catch (error) {
-      console.log("Ошибка при получении рекомендуемых слотов:", error);
+      console.log(error);
     }
   };
 
-  const getAvailableSolts = async () => {
+  const getAvailableSolts = () => {
+
     setDocSlots([]);
 
-    // getting current date
     let today = new Date();
 
-    for (let i = 0; i < 7; i++) {
-      // getting date with index
+    for (let i = 0; i < 30; i++) {
+
       let currentDate = new Date(today);
       currentDate.setDate(today.getDate() + i);
 
-      // setting end time of the date with index
       let endTime = new Date();
       endTime.setDate(today.getDate() + i);
       endTime.setHours(21, 0, 0, 0);
 
-      // setting hours
       if (today.getDate() === currentDate.getDate()) {
+
         currentDate.setHours(
             currentDate.getHours() > 10 ? currentDate.getHours() + 1 : 10
         );
+
         currentDate.setMinutes(currentDate.getMinutes() > 30 ? 30 : 0);
+
       } else {
+
         currentDate.setHours(10);
         currentDate.setMinutes(0);
+
       }
 
       let timeSlots = [];
 
       while (currentDate < endTime) {
+
         let formattedTime = currentDate.toLocaleTimeString([], {
           hour: "2-digit",
           minute: "2-digit",
@@ -83,33 +89,42 @@ const Appointment = () => {
         let year = currentDate.getFullYear();
 
         const slotDate = day + "_" + month + "_" + year;
-        const slotTime = formattedTime;
 
         const isSlotAvailable =
             docInfo.slots_booked[slotDate] &&
-            docInfo.slots_booked[slotDate].includes(slotTime)
+            docInfo.slots_booked[slotDate].includes(formattedTime)
                 ? false
                 : true;
 
         if (isSlotAvailable) {
-          // Add slot to array
+
           timeSlots.push({
             datetime: new Date(currentDate),
             time: formattedTime,
           });
+
         }
 
-        // Increment current time by 30 minutes
         currentDate.setMinutes(currentDate.getMinutes() + 30);
+
       }
 
       setDocSlots((prev) => [...prev, timeSlots]);
     }
   };
 
+  const scrollLeft = () => {
+    scrollRef.current.scrollBy({ left: -300, behavior: "smooth" });
+  };
+
+  const scrollRight = () => {
+    scrollRef.current.scrollBy({ left: 300, behavior: "smooth" });
+  };
+
   const bookAppointment = async () => {
+
     if (!token) {
-      toast.warning("Login to book appointment");
+      toast.warning("Войдите в систему");
       return navigate("/login");
     }
 
@@ -122,28 +137,35 @@ const Appointment = () => {
     const slotDate = day + "_" + month + "_" + year;
 
     try {
+
       const { data } = await axios.post(
           backendUrl + "/api/user/book-appointment",
           { docId, slotDate, slotTime },
           { headers: { token } }
       );
+
       if (data.success) {
+
         toast.success(data.message);
         getDoctosData();
         navigate("/my-appointments");
+
       } else {
+
         toast.error(data.message);
+
       }
+
     } catch (error) {
-      console.log(error);
+
       toast.error(error.message);
+
     }
+
   };
 
   useEffect(() => {
-    if (doctors.length > 0) {
-      fetchDocInfo();
-    }
+    if (doctors.length > 0) fetchDocInfo();
   }, [doctors, docId]);
 
   useEffect(() => {
@@ -153,118 +175,183 @@ const Appointment = () => {
     }
   }, [docInfo]);
 
-  // Функция для проверки, является ли слот рекомендуемым
   const isRecommendedSlot = (timeSlot) => {
     return recommendedSlots.includes(timeSlot);
   };
 
   return docInfo ? (
-      <div className={`flex flex-col items-center ${styles["appointment"]}`}>
-        {/* ---------- Doctor Details ----------- */}
-        <div className={`flex flex-col sm:flex-row gap-4 w-full max-w-6xl ${styles["appointment__doctorDetails"]}`}>
-          <div className={styles["appointment__imageContainer"]}>
-            <img
-                className={`bg-primary w-full sm:max-w-72 rounded-lg ${styles["appointment__doctorImage"]}`}
-                src={docInfo.image}
-                alt=""
-            />
+
+      <section className="w-full px-4 md:px-10 lg:px-20 py-6">
+
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-3 gap-6">
+
+          {/* Doctor Card */}
+
+          <div className="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm h-fit">
+
+            <div className="w-full h-56 rounded-xl overflow-hidden bg-white flex items-center justify-center mb-4">
+
+              <img
+                  src={
+                      import.meta.env.VITE_BACKEND_URL +
+                      "/images/" +
+                      docInfo.image
+                  }
+                  className="max-h-full object-contain"
+              />
+
+            </div>
+
+            <h2 className="text-xl font-semibold text-gray-900">
+              {docInfo.name}
+            </h2>
+
+            <p className="text-gray-500 text-sm mt-1">
+              {docInfo.speciality}
+            </p>
+
+            <p className="text-sm text-gray-500 mt-2">
+              {docInfo.degree}
+            </p>
+
+            <p className="text-sm text-gray-500">
+              {docInfo.experience}
+            </p>
+
+            <p className="text-sm mt-3 text-gray-600">
+              Стоимость: {docInfo.fees} {currencySymbol}
+            </p>
+
+            <p className="text-sm text-gray-500 mt-4">
+              {docInfo.about}
+            </p>
+
           </div>
 
-          <div className={`flex-1 border border-[#ADADAD] rounded-lg p-8 py-7 bg-white mx-2 sm:mx-0 mt-[-80px] sm:mt-0 ${styles["appointment__doctorInfo"]}`}>
-            {/* ----- Doc Info : name, degree, experience ----- */}
+          {/* Booking */}
 
-            <p className={`flex items-center gap-2 text-3xl font-medium text-gray-700 ${styles["appointment__doctorName"]}`}>
-              {docInfo.name}{" "}
-              <img className={`w-5 ${styles["appointment__verifiedIcon"]}`} src={assets.verified_icon} alt="" />
-            </p>
-            <div className={`flex items-center gap-2 mt-1 text-gray-600 ${styles["appointment__doctorCredentials"]}`}>
-              <p className={styles["appointment__doctorDegree"]}>
-                {docInfo.degree}
-              </p>
-              <button className={`py-0.5 px-2 border text-xs rounded-full ${styles["appointment__doctorExperience"]}`}>
-                {docInfo.experience}
+          <div className="lg:col-span-2">
+
+            <h2 className="text-2xl font-semibold mb-4">
+              Выберите дату
+            </h2>
+
+            {/* Date slider */}
+
+            <div className="flex items-center gap-2 mb-6">
+
+              <button
+                  onClick={scrollLeft}
+                  className="border rounded-lg px-3 py-2 bg-white hover:bg-gray-50"
+              >
+                ←
               </button>
-            </div>
 
-            {/* ----- Doc About ----- */}
-            <div className={styles["appointment__aboutSection"]}>
-              <p className={`flex items-center gap-1 text-sm font-medium text-[#262626] mt-3 ${styles["appointment__aboutTitle"]}`}>
-                Информация о специолисте
-                <img className={`w-3 ${styles["appointment__infoIcon"]}`} src={assets.info_icon} alt="" />
-              </p>
-              <p className={`text-sm text-gray-600 max-w-[700px] mt-1 ${styles["appointment__aboutText"]}`}>
-                {docInfo.about}
-              </p>
-            </div>
+              <div
+                  ref={scrollRef}
+                  className="flex gap-3 overflow-x-auto scrollbar-hide"
+              >
 
-            <p className={`text-gray-600 font-medium mt-4 ${styles["appointment__fees"]}`}>
-              Стоимость посещения:{" "}
-              <span className={`text-gray-800 ${styles["appointment__feesAmount"]}`}>
-              {docInfo.fees} {currencySymbol}
-            </span>{" "}
-            </p>
-          </div>
-        </div>
+                {docSlots.length &&
+                    docSlots.map((item, index) => (
 
-        {/* Booking slots */}
-        <div className={`flex flex-col items-center mt-8 font-medium text-[#565656] mx-4 w-full max-w-6xl ${styles["appointment__bookingSection"]}`}>
-          <p className={styles["appointment__bookingTitle"]}>Досупное время записи</p>
+                        <button
+                            key={index}
+                            onClick={() => setSlotIndex(index)}
+                            className={`min-w-[70px] border rounded-lg py-3 text-sm transition
+                    ${
+                                slotIndex === index
+                                    ? "bg-primary text-white border-primary"
+                                    : "bg-white hover:bg-gray-50"
+                            }`}
+                        >
 
-          {recommendedSlots.length > 0 && (
-              <div className={`text-sm text-primary font-medium mt-2 text-center ${styles["appointment__recommended"]}`}>
-                <p className={styles["appointment__recommendedTitle"]}>Рекомендуемое время записи на прием:</p>
-                <div className={`flex gap-2 mt-1 flex-wrap justify-center ${styles["appointment__recommendedList"]}`}>
-                  {recommendedSlots.map((time, idx) => (
-                      <span key={idx} className={`px-2 py-1 bg-blue-50 border border-primary rounded-full text-xs ${styles["appointment__recommendedTag"]}`}>
-                  {time}
-                </span>
-                  ))}
-                </div>
+                          <div className="font-medium">
+                            {daysOfWeek[item[0]?.datetime.getDay()]}
+                          </div>
+
+                          <div className="text-xs">
+                            {item[0]?.datetime.getDate()}
+                          </div>
+
+                        </button>
+
+                    ))}
+
               </div>
-          )}
 
-          <div className={`flex gap-3 w-full max-w-xl overflow-x-scroll mt-4 justify-center ${styles["appointment__dateSlots"]}`}>
-            {docSlots.length &&
-                docSlots.map((item, index) => (
-                    <div
-                        onClick={() => setSlotIndex(index)}
-                        key={index}
-                        className={`text-center py-6 min-w-16 rounded-full cursor-pointer ${
-                            slotIndex === index ? "bg-primary text-white" : "border border-[#DDDDDD]"
-                        } ${styles["appointment__dateSlot"]}`}
-                    >
-                      <p className={styles["appointment__dateDay"]}>{item[0]?.datetime && daysOfWeek[item[0].datetime.getDay()]}</p>
-                      <p className={styles["appointment__dateNumber"]}>{item[0]?.datetime?.getDate()}</p>
-                    </div>
-                ))}
+              <button
+                  onClick={scrollRight}
+                  className="border rounded-lg px-3 py-2 bg-white hover:bg-gray-50"
+              >
+                →
+              </button>
+
+            </div>
+
+            <h2 className="text-2xl font-semibold mb-4">
+              Доступное время
+            </h2>
+
+            {/* Time */}
+
+            <div className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-3">
+
+              {docSlots.length &&
+                  docSlots[slotIndex].map((item, index) => (
+
+                      <button
+                          key={index}
+                          onClick={() => setSlotTime(item.time)}
+                          className={`border rounded-lg py-2 text-sm transition
+                  ${
+                              item.time === slotTime
+                                  ? "bg-primary text-white border-primary"
+                                  : "bg-white hover:bg-gray-50"
+                          }
+                  ${
+                              isRecommendedSlot(item.time)
+                                  ? "border-primary"
+                                  : ""
+                          }`}
+                      >
+                        {item.time}
+                      </button>
+
+                  ))}
+
+            </div>
+
+            {recommendedSlots.length > 0 && (
+                <p className="text-xs text-primary mt-2">
+                  * Рекомендуемое время выделено рамкой
+                </p>
+            )}
+
+            <button
+                onClick={bookAppointment}
+                className="mt-8 bg-primary text-white px-8 py-3 rounded-full hover:opacity-90 transition"
+            >
+              Записаться на прием
+            </button>
+
           </div>
 
-          <div className={`flex gap-3 w-full overflow-x-scroll mt-5 justify-center ${styles["appointment__timeSlots"]}`}>
-            {docSlots.length &&
-                docSlots[slotIndex].map((item, index) => (
-                    <p
-                        key={index}
-                        onClick={() => setSlotTime(item.time)}
-                        className={`text-sm px-5 py-2 rounded-full cursor-pointer ${
-                            item.time === slotTime ? "bg-primary text-white" : "text-[#949494] border border-[#B4B4B4]"
-                        } ${isRecommendedSlot(item.time) ? "border-2 border-primary" : ""} ${styles["appointment__timeSlot"]}`}
-                    >
-                      {item.time.toLowerCase()}
-                    </p>
-                ))}
-          </div>
+        </div>
 
-          <button
-              onClick={bookAppointment}
-              className={`bg-primary text-white text-sm px-20 py-3 rounded-full my-6 ${styles["appointment__bookButton"]}`}
-          >
-            Записаться на прием
-          </button>
+        {/* Related Doctors */}
+
+        <div className="mt-16">
+
+          <RelatedDoctors
+              speciality={docInfo.speciality}
+              docId={docId}
+          />
+
         </div>
-        <div className={`w-full max-w-6xl ${styles["appointment__relatedDoctors"]}`}>
-          <RelatedDoctors speciality={docInfo.speciality} docId={docId} />
-        </div>
-      </div>
+
+      </section>
+
   ) : null;
 };
 

@@ -64,7 +64,7 @@ const Benefits = () => {
                 </div>
 
                 {/* Stats Section */}
-                <div className={`mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 ${styles["benefits__stats"]}`}>
+                <div className={`mt-5 grid grid-cols-2 md:grid-cols-4 gap-6 ${styles["benefits__stats"]}`}>
                     <div className={`text-center ${styles["benefits__stat"]}`}>
                         <div className={`text-3xl md:text-4xl font-bold text-primary mb-2 ${styles["benefits__statNumber"]}`}>1000+</div>
                         <div className={`text-sm text-gray-600 ${styles["benefits__statLabel"]}`}>Активных пациентов</div>
@@ -84,7 +84,7 @@ const Benefits = () => {
                 </div>
 
                 {/* CTA Banner */}
-                <div className={`mt-16 bg-primary rounded-2xl p-8 md:p-12 ${styles["benefits__ctaBanner"]}`}>
+                <div className={`mt-10 bg-primary rounded-2xl p-8 md:p-12 ${styles["benefits__ctaBanner"]}`}>
                     <div className={`flex flex-col md:flex-row items-center justify-between gap-6 ${styles["benefits__ctaContainer"]}`}>
                         <div className={styles["benefits__ctaText"]}>
                             <h3 className={`text-2xl md:text-3xl font-semibold text-white mb-2 ${styles["benefits__ctaTitle"]}`}>
