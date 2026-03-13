@@ -1,175 +1,91 @@
 .navbar {
-  &__container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-size: 0.875rem;
-    padding: var(--spacing-md) 0;
-    margin-bottom: var(--spacing-md);
-    border-bottom: 1px solid var(--color-border-input);
-  }
 
   &__logo {
-    width: 11rem;
-    cursor: pointer;
   }
 
   &__menu {
-    display: none;
-    align-items: flex-start;
-    gap: var(--spacing-md);
-    font-weight: 500;
-
-    @media (min-width: 768px) {
-      display: flex;
-    }
+    font-size: var(--menu-font-size);
   }
 
-  &__item {
-    padding: var(--spacing-xs) 0;
-  }
-
-  &__underline {
-    border: none;
-    outline: none;
-    height: 0.125rem;
-    background-color: var(--color-primary);
-    width: 60%;
-    margin: auto;
-    display: none;
-  }
-
-  &__userSection {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-md);
-  }
-
-  &__user {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-xs);
-    cursor: pointer;
-    position: relative;
-  }
-
-  &__userImage {
-    width: 2rem;
-    border-radius: var(--radius-full);
-  }
-
-  &__dropdownIcon {
-    width: 0.625rem;
-  }
-
-  &__dropdownMenu {
-    position: absolute;
-    top: 0;
-    right: 0;
-    padding-top: var(--spacing-3xl);
-    font-size: 1rem;
-    font-weight: 500;
-    color: var(--color-text-gray-600);
-    z-index: 20;
-    display: none;
-  }
-
-  &__user:hover &__dropdownMenu {
-    display: block;
-  }
-
-  &__dropdownContent {
-    min-width: 12rem;
-    background-color: #f9fafb;
-    border-radius: var(--radius-md);
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-md);
-    padding: var(--spacing-md);
-  }
-
-  &__dropdownItem {
-    cursor: pointer;
-
+  &__link {
+    width: 100%;
+    color: var(--primary-font-color-dark);
     &:hover {
-      color: var(--color-bg-black);
+      color: var(--primary-font-color-dark-hover);
     }
   }
 
-  &__loginButton {
-    background-color: var(--color-primary);
-    color: var(--color-bg-white);
-    padding: var(--spacing-sm) var(--spacing-xl);
-    border-radius: var(--radius-full);
-    font-weight: 300;
-    border: none;
-    cursor: pointer;
+  &__linkItem {
+    text-align: center;
+  }
 
-    @media (max-width: 767px) {
-      display: none;
+  &__linkIndicator {
+    width: 100%;
+  }
+
+  &__actions {
+
+  }
+
+  &__profile {
+
+  }
+
+  &__profileImage {
+
+  }
+
+  &__profileDropdownIcon {
+
+  }
+
+  &__profileDropdown {
+
+  }
+
+  &__profileMenu {
+
+  }
+
+  &__profileMenuItem {
+
+  }
+
+  &__authButton {
+    &:hover {
+      background-color: var(--primary-color-hover);
     }
   }
 
   &__menuIcon {
-    width: 1.5rem;
 
-    @media (min-width: 768px) {
-      display: none;
-    }
   }
 
   &__mobileMenu {
-    display: none;
 
-    @media (max-width: 767px) {
-      position: fixed;
-      width: 0;
-      height: 0;
-      right: 0;
-      top: 0;
-      bottom: 0;
-      z-index: 20;
-      overflow: hidden;
-      background-color: var(--color-bg-white);
-      transition: all var(--transition-base);
-
-      &--open {
-        width: 100%;
-        height: 100%;
-      }
-    }
   }
 
-  &__mobileHeader {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: var(--spacing-lg) var(--spacing-md);
+  &__mobileMenuHeader {
+
   }
 
   &__mobileLogo {
-    width: 9rem;
+
   }
 
-  &__mobileClose {
-    width: 1.75rem;
-    cursor: pointer;
+  &__mobileCloseIcon {
+
   }
 
-  &__mobileList {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--spacing-xs);
-    margin-top: var(--spacing-md);
-    padding: 0 var(--spacing-md);
-    font-size: 1.125rem;
-    font-weight: 500;
+  &__mobileMenuList {
+
   }
 
-  &__mobileItem {
-    padding: var(--spacing-xs) var(--spacing-md);
-    border-radius: var(--radius-full);
-    display: inline-block;
+  &__mobileLink {
+
+  }
+
+  &__mobileLinkItem {
+
   }
 }

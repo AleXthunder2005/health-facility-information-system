@@ -1,7 +1,7 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { AppContext } from "@context/AppContext.jsx";
-import { assets } from "@assets/assets.js";
+import { AppContext } from "@context/AppContext";
+import { assets } from "@assets/assets";
 import RelatedDoctors from "@components/RelatedDoctors/RelatedDoctors";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -36,7 +36,7 @@ const Appointment = () => {
       console.log("Рекомендуемые слоты:", data);
 
       if (data.success) {
-        setRecommendedSlots(data.recommendedSlots.map((slot) => slot.time));
+        setRecommendedSlots(data.recommendedSlots.map(slot => slot.time));
       }
     } catch (error) {
       console.log("Ошибка при получении рекомендуемых слотов:", error);
@@ -159,73 +159,63 @@ const Appointment = () => {
   };
 
   return docInfo ? (
-      <div className={styles.appointment}>
+      <div className={`flex flex-col items-center ${styles["appointment"]}`}>
         {/* ---------- Doctor Details ----------- */}
-        <div className={styles.appointment__doctor}>
-          <div>
+        <div className={`flex flex-col sm:flex-row gap-4 w-full max-w-6xl ${styles["appointment__doctorDetails"]}`}>
+          <div className={styles["appointment__imageContainer"]}>
             <img
-                className={styles.appointment__image}
+                className={`bg-primary w-full sm:max-w-72 rounded-lg ${styles["appointment__doctorImage"]}`}
                 src={docInfo.image}
                 alt=""
             />
           </div>
 
-          <div className={styles.appointment__card}>
+          <div className={`flex-1 border border-[#ADADAD] rounded-lg p-8 py-7 bg-white mx-2 sm:mx-0 mt-[-80px] sm:mt-0 ${styles["appointment__doctorInfo"]}`}>
             {/* ----- Doc Info : name, degree, experience ----- */}
 
-            <p className={styles.appointment__name}>
-              {docInfo.name}
-              <img
-                  className={styles.appointment__verified}
-                  src={assets.verified_icon}
-                  alt=""
-              />
+            <p className={`flex items-center gap-2 text-3xl font-medium text-gray-700 ${styles["appointment__doctorName"]}`}>
+              {docInfo.name}{" "}
+              <img className={`w-5 ${styles["appointment__verifiedIcon"]}`} src={assets.verified_icon} alt="" />
             </p>
-
-            <div className={styles.appointment__degree}>
-              <p>{docInfo.degree}</p>
-              <button className={styles.appointment__experience}>
+            <div className={`flex items-center gap-2 mt-1 text-gray-600 ${styles["appointment__doctorCredentials"]}`}>
+              <p className={styles["appointment__doctorDegree"]}>
+                {docInfo.degree}
+              </p>
+              <button className={`py-0.5 px-2 border text-xs rounded-full ${styles["appointment__doctorExperience"]}`}>
                 {docInfo.experience}
               </button>
             </div>
 
             {/* ----- Doc About ----- */}
-            <div>
-              <p className={styles.appointment__aboutTitle}>
+            <div className={styles["appointment__aboutSection"]}>
+              <p className={`flex items-center gap-1 text-sm font-medium text-[#262626] mt-3 ${styles["appointment__aboutTitle"]}`}>
                 Информация о специолисте
-                <img
-                    className={styles.appointment__infoIcon}
-                    src={assets.info_icon}
-                    alt=""
-                />
+                <img className={`w-3 ${styles["appointment__infoIcon"]}`} src={assets.info_icon} alt="" />
               </p>
-
-              <p className={styles.appointment__aboutText}>{docInfo.about}</p>
+              <p className={`text-sm text-gray-600 max-w-[700px] mt-1 ${styles["appointment__aboutText"]}`}>
+                {docInfo.about}
+              </p>
             </div>
 
-            <p className={styles.appointment__price}>
-              Стоимость посещения:
-              <span>
+            <p className={`text-gray-600 font-medium mt-4 ${styles["appointment__fees"]}`}>
+              Стоимость посещения:{" "}
+              <span className={`text-gray-800 ${styles["appointment__feesAmount"]}`}>
               {docInfo.fees} {currencySymbol}
-            </span>
+            </span>{" "}
             </p>
           </div>
         </div>
 
         {/* Booking slots */}
-        <div className={styles.appointment__booking}>
-          <p>Досупное время записи</p>
+        <div className={`flex flex-col items-center mt-8 font-medium text-[#565656] mx-4 w-full max-w-6xl ${styles["appointment__bookingSection"]}`}>
+          <p className={styles["appointment__bookingTitle"]}>Досупное время записи</p>
 
           {recommendedSlots.length > 0 && (
-              <div className={styles.appointment__recommended}>
-                <p>Рекомендуемое время записи на прием:</p>
-
-                <div className={styles.appointment__recommendedList}>
+              <div className={`text-sm text-primary font-medium mt-2 text-center ${styles["appointment__recommended"]}`}>
+                <p className={styles["appointment__recommendedTitle"]}>Рекомендуемое время записи на прием:</p>
+                <div className={`flex gap-2 mt-1 flex-wrap justify-center ${styles["appointment__recommendedList"]}`}>
                   {recommendedSlots.map((time, idx) => (
-                      <span
-                          key={idx}
-                          className={styles.appointment__recommendedItem}
-                      >
+                      <span key={idx} className={`px-2 py-1 bg-blue-50 border border-primary rounded-full text-xs ${styles["appointment__recommendedTag"]}`}>
                   {time}
                 </span>
                   ))}
@@ -233,38 +223,31 @@ const Appointment = () => {
               </div>
           )}
 
-          <div className={styles.appointment__days}>
+          <div className={`flex gap-3 w-full max-w-xl overflow-x-scroll mt-4 justify-center ${styles["appointment__dateSlots"]}`}>
             {docSlots.length &&
                 docSlots.map((item, index) => (
                     <div
                         onClick={() => setSlotIndex(index)}
                         key={index}
-                        className={`${styles.appointment__day} ${
-                            slotIndex === index ? styles.active : ""
-                        }`}
+                        className={`text-center py-6 min-w-16 rounded-full cursor-pointer ${
+                            slotIndex === index ? "bg-primary text-white" : "border border-[#DDDDDD]"
+                        } ${styles["appointment__dateSlot"]}`}
                     >
-                      <p>
-                        {item[0]?.datetime &&
-                            daysOfWeek[item[0].datetime.getDay()]}
-                      </p>
-                      <p>{item[0]?.datetime?.getDate()}</p>
+                      <p className={styles["appointment__dateDay"]}>{item[0]?.datetime && daysOfWeek[item[0].datetime.getDay()]}</p>
+                      <p className={styles["appointment__dateNumber"]}>{item[0]?.datetime?.getDate()}</p>
                     </div>
                 ))}
           </div>
 
-          <div className={styles.appointment__times}>
+          <div className={`flex gap-3 w-full overflow-x-scroll mt-5 justify-center ${styles["appointment__timeSlots"]}`}>
             {docSlots.length &&
                 docSlots[slotIndex].map((item, index) => (
                     <p
                         key={index}
                         onClick={() => setSlotTime(item.time)}
-                        className={`${styles.appointment__time} ${
-                            item.time === slotTime ? styles.active : ""
-                        } ${
-                            isRecommendedSlot(item.time)
-                                ? styles.recommended
-                                : ""
-                        }`}
+                        className={`text-sm px-5 py-2 rounded-full cursor-pointer ${
+                            item.time === slotTime ? "bg-primary text-white" : "text-[#949494] border border-[#B4B4B4]"
+                        } ${isRecommendedSlot(item.time) ? "border-2 border-primary" : ""} ${styles["appointment__timeSlot"]}`}
                     >
                       {item.time.toLowerCase()}
                     </p>
@@ -273,17 +256,13 @@ const Appointment = () => {
 
           <button
               onClick={bookAppointment}
-              className={styles.appointment__button}
+              className={`bg-primary text-white text-sm px-20 py-3 rounded-full my-6 ${styles["appointment__bookButton"]}`}
           >
             Записаться на прием
           </button>
         </div>
-
-        <div className={styles.appointment__related}>
-          <RelatedDoctors
-              speciality={docInfo.speciality}
-              docId={docId}
-          />
+        <div className={`w-full max-w-6xl ${styles["appointment__relatedDoctors"]}`}>
+          <RelatedDoctors speciality={docInfo.speciality} docId={docId} />
         </div>
       </div>
   ) : null;

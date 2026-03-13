@@ -1,53 +1,73 @@
-.specialitymenu {
-  &__container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--spacing-md);
-    padding-top: var(--spacing-3xl);
-    color: var(--color-text-primary);
+// SpecialityMenu.module.scss
+
+.specialityMenu {
+  position: relative;
+  overflow: hidden;
+
+  // Добавляем декоративные фоновые элементы
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    width: 200px;
+    height: 200px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -50px;
+    left: -50px;
+    width: 250px;
+    height: 250px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 50%;
+    pointer-events: none;
   }
 
   &__title {
-    font-size: 1.875rem;
-    font-weight: 500;
+    position: relative;
+    z-index: 1;
+
+    // Добавляем легкое свечение
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   }
 
   &__list {
-    display: flex;
-    justify-content: center;
-    gap: var(--spacing-md);
-    padding-top: var(--spacing-md);
-    width: 100%;
-    overflow-scroll: auto;
-
-    @media (min-width: 640px) {
-      justify-content: center;
-    }
+    position: relative;
+    z-index: 1;
   }
 
   &__item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-size: 1rem;
-    cursor: pointer;
-    flex-shrink: 0;
-    transition: transform var(--transition-base);
-    text-decoration: none;
-    color: inherit;
+    position: relative;
+    z-index: 1;
+    backdrop-filter: blur(5px);
 
+    // Эффект пульсации при наведении
     &:hover {
-      transform: translateY(-10px);
+      animation: pulse 1s infinite;
     }
   }
 
-  &__image {
-    width: 4rem;
-    margin-bottom: var(--spacing-xs);
+  &__itemLabel {
+    position: relative;
+    z-index: 2;
+  }
+}
 
-    @media (min-width: 640px) {
-      width: 6rem;
-    }
+// Анимация пульсации
+@keyframes pulse {
+  0% {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 0 0 0 rgba(37, 99, 235, 0.3);
+  }
+  70% {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 0 0 10px rgba(37, 99, 235, 0);
+  }
+  100% {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 0 0 0 rgba(37, 99, 235, 0);
   }
 }

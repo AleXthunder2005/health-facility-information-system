@@ -1,11 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { AppContext } from '@context/AppContext'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import { assets } from '@assets/assets'
 import { specialityData } from "@assets/assets";
-import styles from './MyAppointments.module.scss'
+import styles from "./MyAppointments.module.scss";
 
 const MyAppointments = () => {
 
@@ -23,7 +23,7 @@ const MyAppointments = () => {
         );
         return foundSpeciality ? foundSpeciality.label : "Unknown";
     }
-    
+
 
     // Function to format the date eg. ( 20_01_2000 => 20 Jan 2000 )
     const slotDateFormat = (slotDate) => {
@@ -56,7 +56,7 @@ const MyAppointments = () => {
                 getUserAppointments()
             } else {
                 toast.error(data.message)
-            }   
+            }
 
         } catch (error) {
             console.log(error)
@@ -134,36 +134,33 @@ const MyAppointments = () => {
     }, [token])
 
     return (
-        <div>
-            <p className={styles.myappointments__title}>Мои записи</p>
-            <div className={styles.myappointments__list}>
+        <div className={styles["myAppointments"]}>
+            <p className={`pb-3 mt-12 text-lg font-medium text-gray-600 border-b ${styles["myAppointments__title"]}`}>Мои записи</p>
+            <div className={styles["myAppointments__list"]}>
                 {appointments.map((item, index) => (
-                    <div key={index} className={styles.myappointments__item}>
-                        <div className={styles.myappointments__imageContainer}>
-                            <img className={styles.myappointments__image} src={import.meta.env.VITE_BACKEND_URL + "/images/" + item.docData.image} alt="" />
+                    <div key={index} className={`grid grid-cols-[1fr_2fr] gap-4 sm:flex sm:gap-6 py-4 border-b ${styles["myAppointments__item"]}`}>
+                        <div className={styles["myAppointments__imageContainer"]}>
+                            <img className={`w-36 bg-[#EAEFFF] ${styles["myAppointments__doctorImage"]}`} src={import.meta.env.VITE_BACKEND_URL + "/images/" + item.docData.image} alt="" />
                         </div>
-                        <div className={styles.myappointments__info}>
-                            <p className={styles.myappointments__name}>{item.docData.name}</p>
-                            <p className={styles.myappointments__speciality}>{getSpecialityLabel(item.docData.speciality)}</p>
-                            <p className={styles.myappointments__addressLabel}>Адрес:</p>
-                            <p className={styles.myappointments__address}>{item.docData.address.line1}</p>
-                            <p className={styles.myappointments__address}>{item.docData.address.line2}</p>
-                            <p className={styles.myappointments__time}><span className={styles.myappointments__timeLabel}>Время:</span> {slotDateFormat(item.slotDate)} |  {item.slotTime}</p>
+                        <div className={`flex-1 text-sm text-[#5E5E5E] ${styles["myAppointments__info"]}`}>
+                            <p className={`text-[#262626] text-base font-semibold ${styles["myAppointments__doctorName"]}`}>{item.docData.name}</p>
+                            <p className={styles["myAppointments__doctorSpeciality"]}>{getSpecialityLabel(item.docData.speciality)}</p>
+                            <p className={`text-[#464646] font-medium mt-1 ${styles["myAppointments__addressLabel"]}`}>Адрес:</p>
+                            <p className={styles["myAppointments__addressLine"]}>{item.docData.address.line1}</p>
+                            <p className={styles["myAppointments__addressLine"]}>{item.docData.address.line2}</p>
+                            <p className={`mt-1 ${styles["myAppointments__dateTime"]}`}><span className={`text-sm text-[#3C3C3C] font-medium ${styles["myAppointments__dateTimeLabel"]}`}>Время:</span> {slotDateFormat(item.slotDate)} |  {item.slotTime}</p>
                         </div>
-                        <div></div>
-                        <div className={styles.myappointments__actions}>
-                            {!item.cancelled && !item.payment && !item.isCompleted && payment === item._id && <button onClick={() => appointmentStripe(item._id)} className={styles['myappointments__button--stripe']}>
-                                <img className={styles.myappointments__logo} src={assets.stripe_logo} alt="" />
-                            </button>}
-                            {!item.cancelled && !item.payment && !item.isCompleted && payment === item._id && <button onClick={() => appointmentRazorpay(item._id)} className={styles['myappointments__button--razorpay']}>
-                                <img className={styles.myappointments__logo} src={assets.razorpay_logo} alt="" />
-                            </button>}
-                            {!item.cancelled && item.payment && !item.isCompleted && <button className={styles['myappointments__button--paid']}>Оплачено</button>}
+                        <div className={styles["myAppointments__emptyDiv"]}></div>
+                        <div className={`flex flex-col gap-2 justify-end text-sm text-center ${styles["myAppointments__actions"]}`}>
+                            {/* {!item.cancelled && !item.payment && !item.isCompleted && payment !== item._id && <button onClick={() => setPayment(item._id)} className='text-[#696969] sm:min-w-48 py-2 border rounded hover:bg-primary hover:text-white transition-all duration-300'>Pay Online</button>} */}
+                            {!item.cancelled && !item.payment && !item.isCompleted && payment === item._id && <button onClick={() => appointmentStripe(item._id)} className={`text-[#696969] sm:min-w-48 py-2 border rounded hover:bg-gray-100 hover:text-white transition-all duration-300 flex items-center justify-center ${styles["myAppointments__paymentButton"]}`}><img className={`max-w-20 max-h-5 ${styles["myAppointments__paymentLogo"]}`} src={assets.stripe_logo} alt="" /></button>}
+                            {!item.cancelled && !item.payment && !item.isCompleted && payment === item._id && <button onClick={() => appointmentRazorpay(item._id)} className={`text-[#696969] sm:min-w-48 py-2 border rounded hover:bg-gray-100 hover:text-white transition-all duration-300 flex items-center justify-center ${styles["myAppointments__paymentButton"]}`}><img className={`max-w-20 max-h-5 ${styles["myAppointments__paymentLogo"]}`} src={assets.razorpay_logo} alt="" /></button>}
+                            {!item.cancelled && item.payment && !item.isCompleted && <button className={`sm:min-w-48 py-2 border rounded text-[#696969] bg-[#EAEFFF] ${styles["myAppointments__paidButton"]}`}>Оплачено</button>}
 
-                            {item.isCompleted && <button className={styles['myappointments__button--completed']}>Завершен</button>}
+                            {item.isCompleted && <button className={`sm:min-w-48 py-2 border border-green-500 rounded text-green-500 ${styles["myAppointments__completedButton"]}`}>Завершен</button>}
 
-                            {!item.cancelled && !item.isCompleted && <button onClick={() => cancelAppointment(item._id)} className={styles['myappointments__button--cancel']}>Отменить запись</button>}
-                            {item.cancelled && !item.isCompleted && <button className={styles['myappointments__button--cancelled']}>Запись отменена</button>}
+                            {!item.cancelled && !item.isCompleted && <button onClick={() => cancelAppointment(item._id)} className={`text-[#696969] sm:min-w-48 py-2 border rounded hover:bg-red-600 hover:text-white transition-all duration-300 ${styles["myAppointments__cancelButton"]}`}>Отменить запись</button>}
+                            {item.cancelled && !item.isCompleted && <button className={`sm:min-w-48 py-2 border border-red-500 rounded text-red-500 ${styles["myAppointments__cancelledButton"]}`}>Запись отменена</button>}
                         </div>
                     </div>
                 ))}

@@ -4,7 +4,7 @@ import group_profiles from "./group_profiles.png";
 import profile_pic from "./profile_pic.png";
 import contact_image from "./contact_image.png";
 import about_image from "./about_image.png";
-import logo from "./logo.png";
+import logo from "./png-logo.png";
 import dropdown_icon from "./dropdown_icon.svg";
 import menu_icon from "./menu_icon.svg";
 import cross_icon from "./cross_icon.png";
@@ -37,6 +37,11 @@ import Gynecologist from "./Gynecologist.svg";
 import Neurologist from "./Neurologist.svg";
 import Pediatricians from "./Pediatricians.svg";
 
+import doctor_male from "./doctor_male.svg";
+import calendar from "./calendar.svg";
+import chat from './communication.svg';
+import group_communication from './group_discussion_meetingx3.svg';
+
 export const assets = {
   appointment_img,
   header_img,
@@ -55,6 +60,10 @@ export const assets = {
   upload_icon,
   stripe_logo,
   razorpay_logo,
+  doctor_male,
+  calendar,
+  chat,
+  group_communication,
 };
 
 export const specialityData = [

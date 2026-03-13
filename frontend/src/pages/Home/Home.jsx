@@ -1,16 +1,13 @@
-import React from 'react'
 import Header from '@components/Header/Header'
 import SpecialityMenu from '@components/SpecialityMenu/SpecialityMenu'
-import TopDoctors from '@components/TopDoctors/TopDoctors'
-import Banner from '@components/Banner/Banner'
+import Benefits from "@components/Benefits/Benefits.jsx";
 
 const Home = () => {
   return (
     <div>
       <Header />
       <SpecialityMenu />
-      <TopDoctors />
-      <Banner />
+      <Benefits />
     </div>
   )
 }

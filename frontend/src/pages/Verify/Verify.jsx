@@ -1,9 +1,9 @@
 import axios from 'axios';
-import React, { useContext, useEffect } from 'react'
+import { useContext, useEffect } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { AppContext } from '@context/AppContext';
 import { toast } from 'react-toastify';
-import styles from './Verify.module.scss';
+import styles from "./Verify.module.scss";
 
 const Verify = () => {
 
@@ -45,8 +45,8 @@ const Verify = () => {
     }, [token])
 
     return (
-        <div className={styles.verify__container}>
-            <div className={styles.verify__spinner}></div>
+        <div className={`min-h-[60vh] flex items-center justify-center ${styles["verify"]}`}>
+            <div className={`w-20 h-20 border-4 border-gray-300 border-t-4 border-t-primary rounded-full animate-spin ${styles["verify__spinner"]}`}></div>
         </div>
     )
 }
