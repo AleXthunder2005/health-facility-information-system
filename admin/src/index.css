@@ -3,8 +3,26 @@
 @tailwind components;
 @tailwind utilities;
 
-*{
-    font-family: Outfit;
+
+:root {
+    --primary-color: #509cff;
+    --primary-color-hover: #0a61d3;
+    --primary-light-color: #a4c8ff;
+
+    --primary-font-family: Helvetica, sans-serif;
+    --primary-font-color-dark: #2c2c2c;
+    --primary-font-color-dark-hover: #131313;
+    --primary-font-color-gray: #6e6e6e;
+    --primary-font-color-light: #ffffff;
+    --primary-font-color-light-hover: #ffffff;
+
+    --menu-font-size: 1rem;
+
+    font-size: 18px;
+}
+
+* {
+    font-family: var(--primary-font-family);
 }
 
 ::-webkit-scrollbar{

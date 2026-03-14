@@ -8,117 +8,67 @@ const Sidebar = () => {
   const { dToken } = useContext(DoctorContext);
   const { aToken } = useContext(AdminContext);
 
-  return (
-    <div className="min-h-screen bg-white border-r">
-      {aToken && (
-        <ul className="text-[#515151] mt-5">
-          <NavLink
-            to={"/admin-dashboard"}
-            className={({ isActive }) =>
-              `flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${
-                isActive ? "bg-[#F2F3FF] border-r-4 border-primary" : ""
-              }`
-            }
-          >
-            <img className="min-w-5" src={assets.home_icon} alt="" />
-            <p className="hidden md:block">Статистика системы</p>
-          </NavLink>
-          <NavLink
-            to={"/all-appointments"}
-            className={({ isActive }) =>
-              `flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${
-                isActive ? "bg-[#F2F3FF] border-r-4 border-primary" : ""
-              }`
-            }
-          >
-            <img className="min-w-5" src={assets.appointment_icon} alt="" />
-            <p className="hidden md:block">Все записи</p>
-          </NavLink>
-          <NavLink
-            to={"/add-doctor"}
-            className={({ isActive }) =>
-              `flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${
-                isActive ? "bg-[#F2F3FF] border-r-4 border-primary" : ""
-              }`
-            }
-          >
-            <img className="min-w-5" src={assets.add_icon} alt="" />
-            <p className="hidden md:block">Зарегистрировать доктора</p>
-          </NavLink>
-          <NavLink
-            to={"/doctor-list"}
-            className={({ isActive }) =>
-              `flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${
-                isActive ? "bg-[#F2F3FF] border-r-4 border-primary" : ""
-              }`
-            }
-          >
-            <img className="min-w-5" src={assets.people_icon} alt="" />
-            <p className="hidden md:block">Список докторов</p>
-          </NavLink>
-          <NavLink
-            to={"/doctor-patients-admin"}
-            className={({ isActive }) =>
-              `flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${
-                isActive ? "bg-[#F2F3FF] border-r-4 border-primary" : ""
-              }`
-            }
-          >
-            <img className="min-w-5" src={assets.patient_icon} alt="" />
-            <p className="hidden md:block">Пациенты врачей</p>
-          </NavLink>
-        </ul>
-      )}
+  // Универсальные классы для NavLink
+  const navItemClasses = ({ isActive }) =>
+      `flex items-center gap-2 py-2 px-5 rounded-xl cursor-pointer transition-colors w-full ${
+          isActive
+              ? "bg-[#F2F3FF] text-primary font-semibold"
+              : "text-gray-600 hover:bg-gray-100"
+      }`;
 
-      {dToken && (
-        <ul className="text-[#515151] mt-5">
-          <NavLink
-            to={"/doctor-dashboard"}
-            className={({ isActive }) =>
-              `flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${
-                isActive ? "bg-[#F2F3FF] border-r-4 border-primary" : ""
-              }`
-            }
-          >
-            <img className="min-w-5" src={assets.home_icon} alt="" />
-            <p className="hidden md:block">Личный кабинет</p>
-          </NavLink>
-          <NavLink
-            to={"/doctor-appointments"}
-            className={({ isActive }) =>
-              `flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${
-                isActive ? "bg-[#F2F3FF] border-r-4 border-primary" : ""
-              }`
-            }
-          >
-            <img className="min-w-5" src={assets.appointment_icon} alt="" />
-            <p className="hidden md:block">Записи</p>
-          </NavLink>
-          <NavLink
-            to={"/doctor-patients"}
-            className={({ isActive }) =>
-              `flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${
-                isActive ? "bg-[#F2F3FF] border-r-4 border-primary" : ""
-              }`
-            }
-          >
-            <img className="min-w-5" src={assets.patient_icon} alt="" />
-            <p className="hidden md:block">Пациенты</p>
-          </NavLink>
-          <NavLink
-            to={"/doctor-profile"}
-            className={({ isActive }) =>
-              `flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${
-                isActive ? "bg-[#F2F3FF] border-r-4 border-primary" : ""
-              }`
-            }
-          >
-            <img className="min-w-5" src={assets.people_icon} alt="" />
-            <p className="hidden md:block">Профиль</p>
-          </NavLink>
-        </ul>
-      )}
-    </div>
+  const navTextClasses = "hidden md:block truncate"; // текст скрыт на маленьких экранах, длинные строки обрезаются
+  const iconClasses = "w-5 h-5 mr-2 flex-shrink-0"; // фиксированный размер иконки
+
+  return (
+      <div className="min-h-screen w-80 bg-white border-r p-4 flex flex-col">
+        {/* Admin Menu */}
+        {aToken && (
+            <ul className="flex flex-col gap-1 mt-5">
+              <NavLink to="/admin-dashboard" className={navItemClasses}>
+                <img className={iconClasses} src={assets.home_icon} alt="" />
+                <p className={navTextClasses}>О системе</p>
+              </NavLink>
+              <NavLink to="/all-appointments" className={navItemClasses}>
+                <img className={iconClasses} src={assets.appointment_icon} alt="" />
+                <p className={navTextClasses}>Все записи</p>
+              </NavLink>
+              <NavLink to="/add-doctor" className={navItemClasses}>
+                <img className={iconClasses} src={assets.add_icon} alt="" />
+                <p className={navTextClasses}>Добавить врача</p>
+              </NavLink>
+              <NavLink to="/doctor-list" className={navItemClasses}>
+                <img className={iconClasses} src={assets.people_icon} alt="" />
+                <p className={navTextClasses}>Все врачи</p>
+              </NavLink>
+              <NavLink to="/doctor-patients-admin" className={navItemClasses}>
+                <img className={iconClasses} src={assets.patient_icon} alt="" />
+                <p className={navTextClasses}>Все пациенты</p>
+              </NavLink>
+            </ul>
+        )}
+
+        {/* Doctor Menu */}
+        {dToken && (
+            <ul className="flex flex-col gap-2 mt-5">
+              <NavLink to="/doctor-dashboard" className={navItemClasses}>
+                <img className={iconClasses} src={assets.home_icon} alt="" />
+                <p className={navTextClasses}>Личный кабинет</p>
+              </NavLink>
+              <NavLink to="/doctor-appointments" className={navItemClasses}>
+                <img className={iconClasses} src={assets.appointment_icon} alt="" />
+                <p className={navTextClasses}>Записи</p>
+              </NavLink>
+              <NavLink to="/doctor-patients" className={navItemClasses}>
+                <img className={iconClasses} src={assets.patient_icon} alt="" />
+                <p className={navTextClasses}>Пациенты</p>
+              </NavLink>
+              <NavLink to="/doctor-profile" className={navItemClasses}>
+                <img className={iconClasses} src={assets.people_icon} alt="" />
+                <p className={navTextClasses}>Профиль</p>
+              </NavLink>
+            </ul>
+        )}
+      </div>
   );
 };
 

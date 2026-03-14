@@ -13,6 +13,11 @@ import earning_icon from "./earning_icon.svg";
 import patients_icon from "./patients_icon.svg";
 import invoice_icon from "./invoice_icon.svg";
 import patient_icon from "./patient_icon.svg";
+import logo from "./png-logo.png";
+import doctor_male from "./doctor_male.svg";
+import money_bag from "./money_bag.svg";
+import notice from "./notice.svg";
+import white_user from "./white_user.svg";
 
 export const assets = {
   add_icon,
@@ -30,4 +35,9 @@ export const assets = {
   earning_icon,
   invoice_icon,
   patient_icon,
+  logo,
+  doctor_male,
+  money_bag,
+  notice,
+  white_user
 };
