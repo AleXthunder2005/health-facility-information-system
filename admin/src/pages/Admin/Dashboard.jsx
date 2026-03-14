@@ -22,41 +22,52 @@ const Dashboard = () => {
   }
 
   const today = new Date()
-  const todayAppointments = useMemo(() => {
-    if (!dashData?.allAppointments) return []
-    return dashData.allAppointments.filter(app => {
-      const appDate = getAppDate(app.slotDate)
-      return appDate.toDateString() === today.toDateString() && !app.cancelled
-    })
-  }, [dashData])
 
+  // Все записи
+  const allAppointments = useMemo(() => dashData?.allAppointments || [], [dashData])
+
+  // Завершённые записи (посещённые)
+  const completedAppointments = useMemo(
+      () => allAppointments.filter(app => app.isCompleted && !app.cancelled),
+      [allAppointments]
+  )
+
+  // Сегодняшние завершённые записи
+  const todayAppointments = useMemo(
+      () => completedAppointments.filter(app => getAppDate(app.slotDate).toDateString() === today.toDateString()),
+      [completedAppointments]
+  )
+
+  // Доходы
   const todayIncome = useMemo(() => todayAppointments.reduce((sum, app) => sum + app.amount, 0), [todayAppointments])
+  const totalIncome = useMemo(() => completedAppointments.reduce((sum, app) => sum + app.amount, 0), [completedAppointments])
 
-  const totalIncome = useMemo(() => {
-    if (!dashData?.allAppointments) return 0
-    return dashData.allAppointments.filter(app => !app.cancelled).reduce((sum, app) => sum + app.amount, 0)
-  }, [dashData])
-
+  // График за последние 30 дней
   const chartData = useMemo(() => {
-    if (!dashData?.allAppointments) return { labels: [], datasets: [] }
-    const currentMonth = today.getMonth()
-    const currentYear = today.getFullYear()
-    const filtered = dashData.allAppointments.filter(app => {
-      const date = getAppDate(app.slotDate)
-      return date.getMonth() === currentMonth && date.getFullYear() === currentYear && !app.cancelled
-    })
     const dailyIncome = {}
-    filtered.forEach(app => {
-      const day = getAppDate(app.slotDate).getDate()
-      dailyIncome[day] = (dailyIncome[day] || 0) + app.amount
+    const last30Days = []
+
+    for (let i = 29; i >= 0; i--) {
+      const date = new Date()
+      date.setDate(today.getDate() - i)
+      last30Days.push(new Date(date))
+      dailyIncome[date.toDateString()] = 0
+    }
+
+    completedAppointments.forEach(app => {
+      const appDate = getAppDate(app.slotDate)
+      const key = appDate.toDateString()
+      if (key in dailyIncome) dailyIncome[key] += app.amount
     })
-    const labels = Array.from({ length: new Date(currentYear, currentMonth + 1, 0).getDate() }, (_, i) => i + 1)
-    const data = labels.map((day, idx) => labels.slice(0, idx + 1).reduce((sum, d) => sum + (dailyIncome[d] || 0), 0))
+
+    const labels = last30Days.map(d => `${d.getDate().toString().padStart(2,'0')}.${(d.getMonth()+1).toString().padStart(2,'0')}`)
+    const data = last30Days.map(d => dailyIncome[d.toDateString()])
+
     return {
       labels,
       datasets: [
         {
-          label: 'Доход за месяц (BYN)',
+          label: 'Доход за последние 30 дней (BYN)',
           data,
           borderColor: '#3b82f6',
           backgroundColor: 'rgba(59,130,246,0.2)',
@@ -64,20 +75,20 @@ const Dashboard = () => {
         }
       ]
     }
-  }, [dashData])
+  }, [completedAppointments])
 
   const chartOptions = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
       legend: { position: 'bottom' },
-      title: { display: true, text: 'Доход за текущий месяц' }
+      title: { display: true, text: 'Доход за последние 30 дней' }
     }
   }
 
   const exportToExcel = () => {
-    if (!dashData?.allAppointments) return
-    const exportData = dashData.allAppointments.map(app => ({
+    if (!allAppointments.length) return
+    const exportData = completedAppointments.map(app => ({
       'Имя пациента': app.userData.name,
       'Имя доктора': app.docData.name,
       'Специальность': app.docData.speciality,
@@ -101,9 +112,9 @@ const Dashboard = () => {
 
         {/* Верхняя сетка: 4 дашборда */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          <Card icon={assets.notice} title="Записи за сегодня" value={todayAppointments.length} />
+          <Card icon={assets.notice} title="Записи за сегодня" value={`${todayAppointments.length} / ${allAppointments.filter(app => getAppDate(app.slotDate).toDateString() === today.toDateString()).length}`} />
           <Card icon={assets.money_bag} title="Доход за сегодня" value={`${todayIncome} BYN`} />
-          <Card icon={assets.notice} title="Все записи" value={dashData.appointments} />
+          <Card icon={assets.notice} title="Все записи" value={`${completedAppointments.length} / ${allAppointments.length}`} />
           <Card icon={assets.money_bag} title="Суммарный доход" value={`${totalIncome} BYN`} />
         </div>
 
@@ -113,7 +124,7 @@ const Dashboard = () => {
           <Card icon={assets.doctor_male} title="Все врачи" value={dashData.doctors} />
         </div>
 
-        {/* График дохода за месяц */}
+        {/* График дохода за последние 30 дней */}
         <div className="bg-white rounded-xl shadow w-full" style={{ height: '400px' }}>
           <Line data={chartData} options={chartOptions} />
         </div>
