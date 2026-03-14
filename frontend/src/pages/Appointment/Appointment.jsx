@@ -249,7 +249,7 @@ const Appointment = () => {
 
               <div
                   ref={scrollRef}
-                  className="flex gap-3 overflow-x-auto scrollbar-hide"
+                  className="flex gap-3 overflow-x-hidden"
               >
 
                 {docSlots.length &&
@@ -330,7 +330,7 @@ const Appointment = () => {
 
             <button
                 onClick={bookAppointment}
-                className="mt-8 bg-primary text-white px-8 py-3 rounded-full hover:opacity-90 transition"
+                className="mt-8 bg-primary text-white px-8 py-3 rounded-full hover:opacity-90 transition w-full"
             >
               Записаться на прием
             </button>

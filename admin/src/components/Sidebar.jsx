@@ -20,30 +20,38 @@ const Sidebar = () => {
   const iconClasses = "w-5 h-5 mr-2 flex-shrink-0"; // фиксированный размер иконки
 
   return (
-      <div className="min-h-screen w-80 bg-white border-r p-4 flex flex-col">
+      <div className="w-80 bg-white border-r p-4 flex flex-col">
         {/* Admin Menu */}
         {aToken && (
             <ul className="flex flex-col gap-1 mt-5">
-              <NavLink to="/admin-dashboard" className={navItemClasses}>
-                <img className={iconClasses} src={assets.home_icon} alt="" />
-                <p className={navTextClasses}>О системе</p>
-              </NavLink>
-              <NavLink to="/all-appointments" className={navItemClasses}>
-                <img className={iconClasses} src={assets.appointment_icon} alt="" />
-                <p className={navTextClasses}>Все записи</p>
-              </NavLink>
-              <NavLink to="/add-doctor" className={navItemClasses}>
-                <img className={iconClasses} src={assets.add_icon} alt="" />
-                <p className={navTextClasses}>Добавить врача</p>
-              </NavLink>
-              <NavLink to="/doctor-list" className={navItemClasses}>
-                <img className={iconClasses} src={assets.people_icon} alt="" />
-                <p className={navTextClasses}>Все врачи</p>
-              </NavLink>
-              <NavLink to="/doctor-patients-admin" className={navItemClasses}>
-                <img className={iconClasses} src={assets.patient_icon} alt="" />
-                <p className={navTextClasses}>Все пациенты</p>
-              </NavLink>
+                <NavLink to="/admin-dashboard" className={navItemClasses}>
+                    <img className={iconClasses} src={assets.home_icon} alt="" />
+                    <p className={navTextClasses}>О системе</p>
+                </NavLink>
+                <NavLink to="/all-appointments" className={navItemClasses}>
+                    <img className={iconClasses} src={assets.appointment_icon} alt="" />
+                    <p className={navTextClasses}>Все записи</p>
+                </NavLink>
+                <NavLink to="/doctor-list" className={navItemClasses}>
+                    <img className={iconClasses} src={assets.people_icon} alt="" />
+                    <p className={navTextClasses}>Все врачи</p>
+                </NavLink>
+                <NavLink to="/add-doctor" className={navItemClasses}>
+                    <img className={iconClasses} src={assets.add_icon} alt="" />
+                    <p className={navTextClasses}>Добавить врача</p>
+                </NavLink>
+                <NavLink to="/patient-list" className={navItemClasses}>
+                    <img className={iconClasses} src={assets.people_icon} alt="" />
+                    <p className={navTextClasses}>Все пациенты</p>
+                </NavLink>
+                <NavLink to="/service-list" className={navItemClasses}>
+                    <img className={`${iconClasses} w-10`} src={assets.service} alt="" />
+                    <p className={navTextClasses}>Все услуги</p>
+                </NavLink>
+                <NavLink to="/doctor-patients-admin" className={navItemClasses}>
+                    <img className={iconClasses} src={assets.patient_icon} alt="" />
+                    <p className={navTextClasses}> Врачи и пациенты</p>
+                </NavLink>
             </ul>
         )}
 

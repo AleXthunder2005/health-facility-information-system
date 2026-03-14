@@ -35,7 +35,7 @@ const AllAppointments = () => {
           </div>
 
           {/* Список */}
-          <div className="max-h-[70vh] overflow-y-auto divide-y">
+          <div className="max-h-[62vh] overflow-y-auto divide-y">
 
             {appointments.map((item, index) => (
 

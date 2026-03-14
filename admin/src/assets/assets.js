@@ -18,6 +18,7 @@ import doctor_male from "./doctor_male.svg";
 import money_bag from "./money_bag.svg";
 import notice from "./notice.svg";
 import white_user from "./white_user.svg";
+import service from "./service.svg";
 
 export const assets = {
   add_icon,
@@ -39,5 +40,6 @@ export const assets = {
   doctor_male,
   money_bag,
   notice,
-  white_user
+  white_user,
+  service
 };

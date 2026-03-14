@@ -60,7 +60,7 @@ const RelatedDoctors = ({ speciality, docId }) => {
                                 navigate(`/appointment/${item._id}`);
                                 window.scrollTo({ top: 0 });
                             }}
-                            className="mt-3 bg-primary text-white px-5 py-2 rounded-full text-sm hover:opacity-90 transition"
+                            className="w-full mt-3 bg-primary text-white px-5 py-2 rounded-full text-sm hover:opacity-90 transition"
                         >
                             Записаться
                         </button>
