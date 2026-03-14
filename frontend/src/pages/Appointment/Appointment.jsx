@@ -207,7 +207,7 @@ const Appointment = () => {
             </h2>
 
             <p className="text-gray-500 text-sm mt-1">
-              {docInfo.speciality}
+              {docInfo.label}
             </p>
 
             <p className="text-sm text-gray-500 mt-2">

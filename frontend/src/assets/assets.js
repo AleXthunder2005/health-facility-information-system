@@ -41,6 +41,12 @@ import doctor_male from "./doctor_male.svg";
 import calendar from "./calendar.svg";
 import chat from './communication.svg';
 import group_communication from './group_discussion_meetingx3.svg';
+import test_icon from './test_icon.svg';
+import ui_user_profile from './ui_user_profile.svg';
+import virus_research from './virus-research.svg';
+import notice_icon from './notice.svg';
+import recomendations_icon from './recomendations_icon.svg';
+import heart_cardiogram from './heart_cardiogram.svg';
 
 export const assets = {
   appointment_img,
@@ -64,6 +70,12 @@ export const assets = {
   calendar,
   chat,
   group_communication,
+  test_icon,
+  ui_user_profile,
+  virus_research,
+  notice_icon,
+  recomendations_icon,
+  heart_cardiogram,
 };
 
 export const specialityData = [

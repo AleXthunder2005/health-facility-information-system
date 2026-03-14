@@ -12,6 +12,8 @@ import Footer from '@components/Footer/Footer'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Verify from '@pages/Verify/Verify'
+import MyAnalyses from "./pages/MyAnalyses/MyAnalyses";
+import MyHistory from "@pages/MyHistory/MyHistory.jsx";
 
 const App = () => {
     return (
@@ -30,6 +32,8 @@ const App = () => {
                     <Route path='/my-appointments' element={<MyAppointments />} />
                     <Route path='/my-profile' element={<MyProfile />} />
                     <Route path='/verify' element={<Verify />} />
+                    <Route path="/my-analyses" element={<MyAnalyses />} />
+                    <Route path="/my-history" element={<MyHistory />} />
                 </Routes>
             </main>
             <Footer />

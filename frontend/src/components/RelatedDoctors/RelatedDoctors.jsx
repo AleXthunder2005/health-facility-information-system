@@ -48,7 +48,7 @@ const RelatedDoctors = ({ speciality, docId }) => {
                         </h3>
 
                         <p className="text-sm text-gray-500">
-                            {item.speciality}
+                            {item.label}
                         </p>
 
                         <p className="text-sm text-gray-500">

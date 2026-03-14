@@ -57,11 +57,11 @@ const Login = () => {
   }, [token]);
 
   return (
-      <section className={`min-h-[80vh] flex items-center justify-center bg-gray-50 py-20 ${styles["login"]}`}>
+      <section className={`min-h-[70vh] flex items-center justify-center bg-gray-50 py-1 ${styles["login"]}`}>
 
         <form
             onSubmit={onSubmitHandler}
-            className={`flex flex-col gap-5 bg-white p-10 rounded-2xl shadow-lg w-full max-w-md ${styles["login__container"]}`}
+            className={`flex flex-col gap-5 bg-white p-5 rounded-2xl shadow-lg w-full max-w-md ${styles["login__container"]}`}
         >
 
           {/* Заголовок */}
@@ -89,7 +89,7 @@ const Login = () => {
           )}
 
           {/* Email */}
-          <div className={`flex flex-col gap-1 ${styles["login__field"]}`}>
+          <div className={`flex flex-col gap-0.5 ${styles["login__field"]}`}>
             <label className="text-gray-600 text-sm">Электронный адрес</label>
             <input
                 type="email"

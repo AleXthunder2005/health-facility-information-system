@@ -21,7 +21,7 @@ const MyAppointments = () => {
         const foundSpeciality = specialityData.find(
             (item) => item.speciality === speciality
         );
-        return foundSpeciality ? foundSpeciality.label : "Unknown";
+        return foundSpeciality ? foundSpeciality.label : "Неизвестен";
     }
 
     const slotDateFormat = (slotDate) => {
@@ -211,9 +211,9 @@ const MyAppointments = () => {
                                     {item.docData.address.line1}
                                 </p>
 
-                                <p>
-                                    {item.docData.address.line2}
-                                </p>
+                                {/*<p>*/}
+                                {/*    {item.docData.address.line2}*/}
+                                {/*</p>*/}
 
                                 <p className="mt-2">
                                     <span className="font-medium text-gray-700">
