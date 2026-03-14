@@ -105,7 +105,7 @@ const Navbar = () => {
                   onClick={() => navigate("/login")}
                   className={`bg-primary text-white px-8 py-3 rounded-full font-light hidden transition md:block ${styles["navbar__authButton"]}`}
               >
-                Регистрация
+                Войти
               </button>
           )}
 
