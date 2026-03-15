@@ -67,11 +67,11 @@ const Sidebar = () => {
                 <p className={navTextClasses}>Записи</p>
               </NavLink>
               <NavLink to="/doctor-patients" className={navItemClasses}>
-                <img className={iconClasses} src={assets.patient_icon} alt="" />
+                <img className={iconClasses} src={assets.people_icon} alt="" />
                 <p className={navTextClasses}>Пациенты</p>
               </NavLink>
               <NavLink to="/doctor-profile" className={navItemClasses}>
-                <img className={iconClasses} src={assets.people_icon} alt="" />
+                <img className={iconClasses} src={assets.patient_icon} alt="" />
                 <p className={navTextClasses}>Профиль</p>
               </NavLink>
             </ul>

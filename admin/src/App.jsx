@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { DoctorContext } from './context/DoctorContext';
 import { AdminContext } from './context/AdminContext';
-import { Route, Routes } from 'react-router-dom'
+import {Navigate, Route, Routes} from 'react-router-dom'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Navbar from './components/Navbar'
@@ -16,6 +16,7 @@ import DoctorDashboard from './pages/Doctor/DoctorDashboard';
 import DoctorProfile from './pages/Doctor/DoctorProfile';
 import DoctorPatients from './pages/Doctor/DoctorPatients';
 import DoctorPatientsAdmin from './pages/Admin/DoctorPatientsAdmin';
+import PatientHistory from "./pages/Doctor/PatientHistory.jsx";
 
 const App = () => {
 
@@ -32,7 +33,7 @@ const App = () => {
 
               <div className='flex-1'>
                   <Routes>
-                      <Route path='/' element={<></>} />
+                      <Route path='/' element={<Navigate to={aToken ? '/admin-dashboard' : '/doctor-dashboard'}/>} />
                       <Route path='/admin-dashboard' element={<Dashboard />} />
                       <Route path='/all-appointments' element={<AllAppointments />} />
                       <Route path='/add-doctor' element={<AddDoctor />} />
@@ -42,6 +43,7 @@ const App = () => {
                       <Route path='/doctor-appointments' element={<DoctorAppointments />} />
                       <Route path='/doctor-patients' element={<DoctorPatients />} />
                       <Route path='/doctor-profile' element={<DoctorProfile />} />
+                      <Route path='/patient-history/:patientId' element={<PatientHistory />} />
                   </Routes>
               </div>
           </div>

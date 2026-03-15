@@ -3,8 +3,8 @@
 <circle cx="25" cy="21" r="21" fill="#FEF7F5"/>
 <circle cx="25" cy="21" r="20.5" stroke="#FFE7E2"/>
 </g>
-<rect x="20" y="24.7441" width="12.2106" height="1.46527" rx="0.732635" transform="rotate(-45.7402 20 24.7441)" fill="#FFA2A2"/>
-<rect x="28.7461" y="25.709" width="12.2106" height="1.46527" rx="0.732635" transform="rotate(-135.74 28.7461 25.709)" fill="#FFA2A2"/>
+<rect x="20" y="24.7441" width="12.2106" height="1.46527" rx="0.732635" transform="rotate(-45.7402 20 24.7441)" fill="#FF3333"/>
+<rect x="28.7461" y="25.709" width="12.2106" height="1.46527" rx="0.732635" transform="rotate(-135.74 28.7461 25.709)" fill="#FF3333"/>
 <defs>
 <filter id="filter0_d_5853_358" x="0" y="0" width="50" height="50" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
 <feFlood flood-opacity="0" result="BackgroundImageFix"/>

@@ -11,7 +11,7 @@ const AddDoctor = () => {
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const [experience, setExperience] = useState('1 Year')
+    const [experience, setExperience] = useState('1 Год')
     const [fees, setFees] = useState('')
     const [about, setAbout] = useState('')
     const [speciality, setSpeciality] = useState('General physician')
@@ -165,18 +165,18 @@ const AddDoctor = () => {
                                 value={experience}
                                 className={inputStyle}
                             >
-                                <option value="Less than 1">&lt; 1 Года</option>
-                                <option value="1 Year">1 Год</option>
-                                <option value="2 Year">2 Года</option>
-                                <option value="3 Year">3 Года</option>
-                                <option value="4 Year">4 Года</option>
-                                <option value="5 Year">5 Лет</option>
-                                <option value="6 Year">6 Лет</option>
-                                <option value="7 Year">7 Лет</option>
-                                <option value="8 Year">8 Лет</option>
-                                <option value="9 Year">9 Лет</option>
-                                <option value="10 Year">10 Лет</option>
-                                <option value="More than 10">&gt; 10 лет</option>
+                                <option value="меньше 1 года">&lt; 1 Года</option>
+                                <option value="1 год">1 Год</option>
+                                <option value="2 года">2 Года</option>
+                                <option value="3 года">3 Года</option>
+                                <option value="4 года">4 Года</option>
+                                <option value="5 лет">5 Лет</option>
+                                <option value="6 лет">6 Лет</option>
+                                <option value="7 лет">7 Лет</option>
+                                <option value="8 лет">8 Лет</option>
+                                <option value="9 лет">9 Лет</option>
+                                <option value="10 лет">10 Лет</option>
+                                <option value="больше 10 лет">&gt; 10 лет</option>
                             </select>
                         </div>
                     </div>

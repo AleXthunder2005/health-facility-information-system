@@ -151,6 +151,59 @@ const DoctorContextProvider = (props) => {
         }
     }
 
+    const getPatientHistory = async (patientId) => {
+        const mockPatientHistory = [
+            {
+                id: "visit_1",
+                doctor: "Иванов Сергей Петрович",
+                specialization: "Кардиолог",
+                clinic: "Городская клиника №12",
+                date: "10.03.2026",
+                time: "10:30",
+                complaints: "Боли в груди, повышенное давление",
+                notes: "Проведён осмотр, измерено давление, выполнена ЭКГ.",
+                recommendations: "Снизить потребление соли, контроль давления, повторный приём через 2 недели.",
+                services: [
+                    { name: "Первичный приём врача", price: 2500 },
+                    { name: "ЭКГ", price: 900 },
+                    { name: "Измерение давления", price: 300 }
+                ]
+            },
+            {
+                id: "visit_2",
+                doctor: "Петрова Анна Викторовна",
+                specialization: "Терапевт",
+                clinic: "Медцентр Здоровье",
+                date: "02.03.2026",
+                time: "14:00",
+                complaints: "Слабость, температура",
+                notes: "Проведён осмотр, назначены анализы.",
+                recommendations: "Постельный режим, обильное питьё.",
+                services: [
+                    { name: "Консультация терапевта", price: 2000 },
+                    { name: "Осмотр", price: 500 }
+                ]
+            },
+            {
+                id: "visit_3",
+                doctor: "Сидоров Алексей Николаевич",
+                specialization: "Невролог",
+                clinic: "Клиника Здоровья",
+                date: "15.02.2026",
+                time: "09:00",
+                complaints: "Головные боли, головокружение",
+                notes: "Проведён неврологический осмотр, назначены анализы.",
+                recommendations: "Контроль давления, приём витаминов группы B.",
+                services: [
+                    { name: "Консультация невролога", price: 1800 },
+                    { name: "ЭЭГ", price: 1200 }
+                ]
+            }
+        ];
+
+        return mockPatientHistory;
+    }
+
     const value = {
         dToken, setDToken, backendUrl,
         appointments,
@@ -161,7 +214,7 @@ const DoctorContextProvider = (props) => {
         dashData, getDashData,
         profileData, setProfileData,
         getProfileData,
-        patients, getPatients,
+        patients, getPatients, getPatientHistory
     }
 
     return (

@@ -19,6 +19,11 @@ import money_bag from "./money_bag.svg";
 import notice from "./notice.svg";
 import white_user from "./white_user.svg";
 import service from "./service.svg";
+import cross_icon from "./cross_icon.png";
+import heart_cardiogram from "./heart_cardiogram.svg";
+import recommendations_icon from "./recommendations_icon.svg";
+import virus_research from "./virus-research.svg";
+import notice_icon from "./notice_icon.svg";
 
 export const assets = {
   add_icon,
@@ -41,5 +46,10 @@ export const assets = {
   money_bag,
   notice,
   white_user,
-  service
+  service,
+  cross_icon,
+  heart_cardiogram,
+  recommendations_icon,
+  virus_research,
+  notice_icon
 };
