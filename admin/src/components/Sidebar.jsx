@@ -60,15 +60,19 @@ const Sidebar = () => {
             <ul className="flex flex-col gap-2 mt-5">
               <NavLink to="/doctor-dashboard" className={navItemClasses}>
                 <img className={iconClasses} src={assets.home_icon} alt="" />
-                <p className={navTextClasses}>Личный кабинет</p>
+                <p className={navTextClasses}>Персональная доска</p>
               </NavLink>
               <NavLink to="/doctor-appointments" className={navItemClasses}>
                 <img className={iconClasses} src={assets.appointment_icon} alt="" />
-                <p className={navTextClasses}>Записи</p>
+                <p className={navTextClasses}>Мои записи</p>
               </NavLink>
               <NavLink to="/doctor-patients" className={navItemClasses}>
                 <img className={iconClasses} src={assets.people_icon} alt="" />
-                <p className={navTextClasses}>Пациенты</p>
+                <p className={navTextClasses}>Мои пациенты</p>
+              </NavLink>
+              <NavLink to="/doctor-analyses" className={navItemClasses}>
+                  <img className={iconClasses} src={assets.virus_research} alt="" />
+                  <p className={navTextClasses}>Анализы</p>
               </NavLink>
               <NavLink to="/doctor-profile" className={navItemClasses}>
                 <img className={iconClasses} src={assets.patient_icon} alt="" />

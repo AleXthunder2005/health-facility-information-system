@@ -7,10 +7,10 @@ const connectDB = async () => {
   mongoose.connection.on("connected", () => console.log("Database Connected"));
   try {
     await mongoose.connect(process.env.MONGODB_URI);
-  await clearDB();
+  // await clearDB();
   // await appointmentModel.deleteMany({});
-  await addDoctors();
-  await addAppointments();
+  // await addDoctors();
+  // await addAppointments();
 
   } catch (error) {
     console.log("MongoDB connection error:", error);

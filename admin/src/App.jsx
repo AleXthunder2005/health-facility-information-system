@@ -17,6 +17,7 @@ import DoctorProfile from './pages/Doctor/DoctorProfile';
 import DoctorPatients from './pages/Doctor/DoctorPatients';
 import DoctorPatientsAdmin from './pages/Admin/DoctorPatientsAdmin';
 import PatientHistory from "./pages/Doctor/PatientHistory.jsx";
+import AddAnalysis from "./pages/Doctor/AddAnalysis.jsx";
 
 const App = () => {
 
@@ -44,6 +45,7 @@ const App = () => {
                       <Route path='/doctor-patients' element={<DoctorPatients />} />
                       <Route path='/doctor-profile' element={<DoctorProfile />} />
                       <Route path='/patient-history/:patientId' element={<PatientHistory />} />
+                      <Route path='/doctor-analyses' element={<AddAnalysis />} />
                   </Routes>
               </div>
           </div>

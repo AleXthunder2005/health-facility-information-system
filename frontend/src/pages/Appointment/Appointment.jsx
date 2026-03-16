@@ -17,7 +17,6 @@ const Appointment = () => {
   const [docSlots, setDocSlots] = useState([]);
   const [slotIndex, setSlotIndex] = useState(0);
   const [slotTime, setSlotTime] = useState("");
-  const [recommendedSlots, setRecommendedSlots] = useState([]);
 
   const scrollRef = useRef(null);
 
@@ -26,23 +25,6 @@ const Appointment = () => {
   const fetchDocInfo = () => {
     const docInfo = doctors.find((doc) => doc._id === docId);
     setDocInfo(docInfo);
-  };
-
-  const getRecommendedSlots = async () => {
-    try {
-
-      const { data } = await axios.post(
-          backendUrl + "/api/user/doctor-recommended-slots",
-          { docId }
-      );
-
-      if (data.success) {
-        setRecommendedSlots(data.recommendedSlots.map((slot) => slot.time));
-      }
-
-    } catch (error) {
-      console.log(error);
-    }
   };
 
   const getAvailableSolts = () => {
@@ -171,13 +153,8 @@ const Appointment = () => {
   useEffect(() => {
     if (docInfo) {
       getAvailableSolts();
-      getRecommendedSlots();
     }
   }, [docInfo]);
-
-  const isRecommendedSlot = (timeSlot) => {
-    return recommendedSlots.includes(timeSlot);
-  };
 
   return docInfo ? (
 
@@ -236,8 +213,6 @@ const Appointment = () => {
               Выберите дату
             </h2>
 
-            {/* Date slider */}
-
             <div className="flex items-center gap-2 mb-6">
 
               <button
@@ -293,8 +268,6 @@ const Appointment = () => {
               Доступное время
             </h2>
 
-            {/* Time */}
-
             <div className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-3">
 
               {docSlots.length &&
@@ -308,11 +281,6 @@ const Appointment = () => {
                               item.time === slotTime
                                   ? "bg-primary text-white border-primary"
                                   : "bg-white hover:bg-gray-50"
-                          }
-                  ${
-                              isRecommendedSlot(item.time)
-                                  ? "border-primary"
-                                  : ""
                           }`}
                       >
                         {item.time}
@@ -321,12 +289,6 @@ const Appointment = () => {
                   ))}
 
             </div>
-
-            {recommendedSlots.length > 0 && (
-                <p className="text-xs text-primary mt-2">
-                  * Рекомендуемое время выделено рамкой
-                </p>
-            )}
 
             <button
                 onClick={bookAppointment}
@@ -338,8 +300,6 @@ const Appointment = () => {
           </div>
 
         </div>
-
-        {/* Related Doctors */}
 
         <div className="mt-16">
 

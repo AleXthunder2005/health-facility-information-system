@@ -14,6 +14,23 @@ const AppContextProvider = (props) => {
   );
   const [userData, setUserData] = useState(false);
 
+  const [analyses, setAnalyses] = useState([]);
+
+// Получить анализы текущего пользователя
+  const loadUserAnalyses = async () => {
+    if (!userData?._id) return;
+    try {
+      const { data } = await axios.get(`${backendUrl}/api/analyses/patient-analyses`, {
+        params: { patientId: userData._id },
+        headers: { token },
+      });
+      if (data.success) setAnalyses(data.analyses);
+    } catch (error) {
+      console.log(error);
+      toast.error("Ошибка загрузки анализов");
+    }
+  };
+
   // Getting Doctors using API
   const getDoctosData = async () => {
     try {
@@ -67,6 +84,9 @@ const AppContextProvider = (props) => {
     userData,
     setUserData,
     loadUserProfileData,
+    analyses,
+    setAnalyses,
+    loadUserAnalyses,
   };
 
   return (

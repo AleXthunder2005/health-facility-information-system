@@ -7,6 +7,7 @@ import doctorRouter from "./routes/doctorRoute.js";
 import adminRouter from "./routes/adminRoute.js";
 import path from "path";
 import { fileURLToPath } from "url";
+import analysesRouter from "./routes/analysesRoutes.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -24,7 +25,11 @@ app.use(cors());
 app.use("/api/user", userRouter);
 app.use("/api/admin", adminRouter);
 app.use("/api/doctor", doctorRouter);
+app.use("/api/analyses", analysesRouter)
+
 app.use("/images", express.static(path.join(__dirname, "public/images")));
+app.use("/uploads", express.static(path.join(__dirname, "public/uploads")));
+
 
 app.get("/", (req, res) => {
   res.send("API Working");
