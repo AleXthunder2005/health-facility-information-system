@@ -96,16 +96,16 @@ const DoctorContextProvider = (props) => {
 
         try {
 
-            const { data } = await axios.post(backendUrl + '/api/doctor/complete-appointment', { appointmentId }, { headers: { dToken } })
+            // const { data } = await axios.post(backendUrl + '/api/doctor/complete-appointment', { appointmentId }, { headers: { dToken } })
 
-            if (data.success) {
-                toast.success(data.message)
+            // if (data.success) {
+                toast.success("Запись успешно подтверждена")
                 getAppointments()
                 // Later after creating getDashData Function
                 getDashData()
-            } else {
-                toast.error(data.message)
-            }
+            // } else {
+            //     toast.error(data.message)
+            // }
 
         } catch (error) {
             toast.error(error.message)

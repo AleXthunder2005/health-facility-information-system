@@ -84,6 +84,7 @@ const appointmentComplete = async (req, res) => {
 
     // отмечаем завершение
     appointmentData.isCompleted = true;
+    appointmentData.amount = totalPrice;
     await appointmentData.save();
 
     // создаём visit
