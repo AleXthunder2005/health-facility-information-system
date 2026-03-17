@@ -48,7 +48,7 @@ const DoctorAppointments = () => {
   }, [allAppointments]);
 
   return (
-      <div className="w-full p-6 space-y-6">
+      <div className="w-full p-6">
 
         <div className="bg-white rounded-xl shadow max-h-[78vh] overflow-hidden">
 

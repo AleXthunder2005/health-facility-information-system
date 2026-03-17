@@ -18,6 +18,7 @@ import DoctorPatients from './pages/Doctor/DoctorPatients';
 import DoctorPatientsAdmin from './pages/Admin/DoctorPatientsAdmin';
 import PatientHistory from "./pages/Doctor/PatientHistory.jsx";
 import AddAnalysis from "./pages/Doctor/AddAnalysis.jsx";
+import Services from "./pages/Admin/Services.jsx";
 
 const App = () => {
 
@@ -46,6 +47,7 @@ const App = () => {
                       <Route path='/doctor-profile' element={<DoctorProfile />} />
                       <Route path='/patient-history/:patientId' element={<PatientHistory />} />
                       <Route path='/doctor-analyses' element={<AddAnalysis />} />
+                      <Route path='/services' element={<Services />} />
                   </Routes>
               </div>
           </div>

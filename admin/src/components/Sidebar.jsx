@@ -3,6 +3,7 @@ import { assets } from "../assets/assets";
 import { NavLink } from "react-router-dom";
 import { DoctorContext } from "../context/DoctorContext";
 import { AdminContext } from "../context/AdminContext";
+import virus_research_black from "../assets/virus-research-black.svg";
 
 const Sidebar = () => {
   const { dToken } = useContext(DoctorContext);
@@ -40,11 +41,7 @@ const Sidebar = () => {
                     <img className={iconClasses} src={assets.add_icon} alt="" />
                     <p className={navTextClasses}>Добавить врача</p>
                 </NavLink>
-                <NavLink to="/patient-list" className={navItemClasses}>
-                    <img className={iconClasses} src={assets.people_icon} alt="" />
-                    <p className={navTextClasses}>Все пациенты</p>
-                </NavLink>
-                <NavLink to="/service-list" className={navItemClasses}>
+                <NavLink to="/services" className={navItemClasses}>
                     <img className={`${iconClasses} w-10`} src={assets.service} alt="" />
                     <p className={navTextClasses}>Все услуги</p>
                 </NavLink>
@@ -71,8 +68,8 @@ const Sidebar = () => {
                 <p className={navTextClasses}>Мои пациенты</p>
               </NavLink>
               <NavLink to="/doctor-analyses" className={navItemClasses}>
-                  <img className={iconClasses} src={assets.virus_research} alt="" />
-                  <p className={navTextClasses}>Анализы</p>
+                  <img className={iconClasses} src={assets.virus_research_black} alt="" />
+                  <p className={navTextClasses}>Исследования</p>
               </NavLink>
               <NavLink to="/doctor-profile" className={navItemClasses}>
                 <img className={iconClasses} src={assets.patient_icon} alt="" />

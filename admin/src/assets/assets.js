@@ -23,6 +23,7 @@ import cross_icon from "./cross_icon.png";
 import heart_cardiogram from "./heart_cardiogram.svg";
 import recommendations_icon from "./recommendations_icon.svg";
 import virus_research from "./virus-research.svg";
+import virus_research_black from "./virus-research-black.svg";
 import notice_icon from "./notice_icon.svg";
 
 export const assets = {
@@ -51,5 +52,6 @@ export const assets = {
   heart_cardiogram,
   recommendations_icon,
   virus_research,
+  virus_research_black,
   notice_icon
 };
