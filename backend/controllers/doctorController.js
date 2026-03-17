@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import doctorModel from "../models/doctorModel.js";
 import appointmentModel from "../models/appointmentModel.js";
 import { sendInvoiceEmail, generateSimpleInvoice } from "../services/emailService.js";
+import Visit from "../models/visitModel.js";
 
 // API for doctor Login
 const loginDoctor = async (req, res) => {
@@ -61,23 +62,72 @@ const appointmentCancel = async (req, res) => {
   }
 };
 
-// API to mark appointment completed for doctor panel
+// API to mark appointment completed and save visit
 const appointmentComplete = async (req, res) => {
   try {
-    const { docId, appointmentId } = req.body;
+    const {
+      docId,
+      appointmentId,
+      services = [],
+      primaryPrice = 0,
+      totalPrice = 0,
+      complaints = "",
+      notes = "",
+      recommendations = ""
+    } = req.body;
 
     const appointmentData = await appointmentModel.findById(appointmentId);
-    if (appointmentData && appointmentData.docId === docId) {
-      await appointmentModel.findByIdAndUpdate(appointmentId, {
-        isCompleted: true,
-      });
-      return res.json({ success: true, message: "Appointment Completed" });
+
+    if (!appointmentData || appointmentData.docId.toString() !== docId) {
+      return res.json({ success: false, message: "Invalid appointment or doctor" });
     }
 
-    res.json({ success: false, message: "Appointment Cancelled" });
-  } catch (error) {
-    console.log(error);
-    res.json({ success: false, message: error.message });
+    // отмечаем завершение
+    appointmentData.isCompleted = true;
+    await appointmentData.save();
+
+    // создаём visit
+    const visit = new Visit({
+      appointmentId: appointmentData._id,
+
+      userId: appointmentData.userId,
+      docId: appointmentData.docId,
+
+      complaints,
+      notes,
+      recommendations,
+
+      primaryPrice,
+      services,
+      totalPrice,
+
+      slotDate: appointmentData.slotDate,
+      slotTime: appointmentData.slotTime,
+      date: appointmentData.date,
+    });
+
+    await visit.save();
+
+    return res.json({
+      success: true,
+      message: "Appointment completed and visit saved"
+    });
+
+  } catch (err) {
+    console.log(err);
+    return res.json({ success: false, message: err.message });
+  }
+};
+
+// API to get patient visit history
+const getPatientVisits = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const visits = await Visit.find({ userId }).sort({ createdAt: -1 });
+    res.json({ success: true, visits });
+  } catch (err) {
+    console.log(err);
+    res.json({ success: false, message: err.message });
   }
 };
 
@@ -305,4 +355,5 @@ export {
   updateDoctorProfile,
   sendInvoiceToPatient,
   getDoctorPatients,
+  getPatientVisits
 };

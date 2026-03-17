@@ -9,6 +9,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import analysesRouter from "./routes/analysesRoutes.js";
 import serviceRouter from './routes/serviceRoute.js';
+import visitRouter from "./routes/visitRoute.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -28,6 +29,7 @@ app.use("/api/admin", adminRouter);
 app.use("/api/doctor", doctorRouter);
 app.use("/api/analyses", analysesRouter)
 app.use("/api/services", serviceRouter)
+app.use("/api/visits", visitRouter)
 
 app.use("/images", express.static(path.join(__dirname, "public/images")));
 app.use("/uploads", express.static(path.join(__dirname, "public/uploads")));

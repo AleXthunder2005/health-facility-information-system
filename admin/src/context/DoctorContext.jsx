@@ -15,37 +15,58 @@ const DoctorContextProvider = (props) => {
     const [profileData, setProfileData] = useState(false)
     const [patients, setPatients] = useState([])
 
-    // Getting Doctor appointment data from Database using API
+
     const getAppointments = async () => {
         try {
-
-            const { data } = await axios.get(backendUrl + '/api/doctor/appointments', { headers: { dToken } })
-
-            if (data.success) {
-                setAppointments(data.appointments.reverse())
-            } else {
-                toast.error(data.message)
-            }
-
-        } catch (error) {
-            console.log(error)
-            toast.error(error.message)
+            const { data } = await axios.get(`${backendUrl}/api/doctor/appointments`, {
+                headers: { dToken }
+            });
+            if (data.success) setAppointments(data.appointments.reverse());
+            else toast.error(data.message);
+        } catch (err) {
+            console.log(err);
+            toast.error(err.message);
         }
-    }
+    };
 
-    // Getting Doctor profile data from Database using API
     const getProfileData = async () => {
         try {
-
-            const { data } = await axios.get(backendUrl + '/api/doctor/profile', { headers: { dToken } })
-            console.log(data.profileData)
-            setProfileData(data.profileData)
-
-        } catch (error) {
-            console.log(error)
-            toast.error(error.message)
+            const { data } = await axios.get(`${backendUrl}/api/doctor/profile`, { headers: { dToken } });
+            setProfileData(data.profileData);
+        } catch (err) {
+            console.log(err);
+            toast.error(err.message);
         }
-    }
+    };
+
+    const getPatients = async () => {
+        try {
+            const { data } = await axios.get(`${backendUrl}/api/doctor/patients`, { headers: { dToken } });
+            if (data.success) setPatients(data.patients);
+            else toast.error(data.message);
+        } catch (err) {
+            console.log(err);
+            toast.error(err.message);
+        }
+    };
+
+    // Получение истории конкретного пациента
+    const getPatientHistory = async (patientId) => {
+        try {
+            const { data } = await axios.get(`${backendUrl}/api/visits/doctor`, { headers: { dToken } });
+            if (data.success) {
+                // Фильтруем визиты конкретного пациента
+                return data.visits.filter(v => v.userId === patientId);
+            } else {
+                toast.error(data.message);
+                return [];
+            }
+        } catch (err) {
+            console.log(err);
+            toast.error(err.message);
+            return [];
+        }
+    };
 
     // Function to cancel doctor appointment using API
     const cancelAppointment = async (appointmentId) => {
@@ -97,8 +118,8 @@ const DoctorContextProvider = (props) => {
     const sendInvoice = async (appointmentId, additionalText = '') => {
         try {
             const { data } = await axios.post(
-                backendUrl + '/api/doctor/send-invoice', 
-                { appointmentId, additionalText }, 
+                backendUrl + '/api/doctor/send-invoice',
+                { appointmentId, additionalText },
                 { headers: { dToken } }
             )
 
@@ -133,75 +154,6 @@ const DoctorContextProvider = (props) => {
             toast.error(error.message)
         }
 
-    }
-
-    // Получение списка пациентов с количеством их приемов
-    const getPatients = async () => {
-        try {
-            const { data } = await axios.get(backendUrl + '/api/doctor/patients', { headers: { dToken } })
-
-            if (data.success) {
-                setPatients(data.patients)
-            } else {
-                toast.error(data.message)
-            }
-        } catch (error) {
-            console.log(error)
-            toast.error(error.message)
-        }
-    }
-
-    const getPatientHistory = async (patientId) => {
-        const mockPatientHistory = [
-            {
-                id: "visit_1",
-                doctor: "Иванов Сергей Петрович",
-                specialization: "Кардиолог",
-                clinic: "Городская клиника №12",
-                date: "10.03.2026",
-                time: "10:30",
-                complaints: "Боли в груди, повышенное давление",
-                notes: "Проведён осмотр, измерено давление, выполнена ЭКГ.",
-                recommendations: "Снизить потребление соли, контроль давления, повторный приём через 2 недели.",
-                services: [
-                    { name: "Первичный приём врача", price: 2500 },
-                    { name: "ЭКГ", price: 900 },
-                    { name: "Измерение давления", price: 300 }
-                ]
-            },
-            {
-                id: "visit_2",
-                doctor: "Петрова Анна Викторовна",
-                specialization: "Терапевт",
-                clinic: "Медцентр Здоровье",
-                date: "02.03.2026",
-                time: "14:00",
-                complaints: "Слабость, температура",
-                notes: "Проведён осмотр, назначены анализы.",
-                recommendations: "Постельный режим, обильное питьё.",
-                services: [
-                    { name: "Консультация терапевта", price: 2000 },
-                    { name: "Осмотр", price: 500 }
-                ]
-            },
-            {
-                id: "visit_3",
-                doctor: "Сидоров Алексей Николаевич",
-                specialization: "Невролог",
-                clinic: "Клиника Здоровья",
-                date: "15.02.2026",
-                time: "09:00",
-                complaints: "Головные боли, головокружение",
-                notes: "Проведён неврологический осмотр, назначены анализы.",
-                recommendations: "Контроль давления, приём витаминов группы B.",
-                services: [
-                    { name: "Консультация невролога", price: 1800 },
-                    { name: "ЭЭГ", price: 1200 }
-                ]
-            }
-        ];
-
-        return mockPatientHistory;
     }
 
     const value = {
