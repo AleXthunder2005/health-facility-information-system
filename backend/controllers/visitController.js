@@ -4,13 +4,11 @@ import visitModel from "../models/visitModel.js";
 const getUserVisits = async (req, res) => {
     try {
         const userId = req.body.userId; // вместо req.userId
-        console.log("userId from body:", userId);
 
         const visits = await visitModel
             .find({ userId })       // визиты конкретного пользователя
-            .populate("docId", "name speciality address") // подтянуть данные врача
+            .populate("docId", "name speciality address image label") // подтянуть данные врача
             .sort({ createdAt: -1 });
-        console.log("visits found:", visits.length);
 
         res.json({ success: true, visits });
     } catch (error) {
@@ -23,9 +21,17 @@ const getUserVisits = async (req, res) => {
 const getDoctorVisits = async (req, res) => {
     try {
         const docId = req.docId;
+        const { patientId } = req.query;
+
+        const query = { docId };
+
+        if (patientId) {
+            query.userId = patientId;
+        }
 
         const visits = await visitModel
-            .find({ docId })
+            .find(query)
+            .populate("docId", "name speciality image")
             .populate("userId", "name dob")
             .sort({ createdAt: -1 });
 
@@ -36,5 +42,4 @@ const getDoctorVisits = async (req, res) => {
         res.json({ success: false, message: error.message });
     }
 };
-
 export { getUserVisits, getDoctorVisits };

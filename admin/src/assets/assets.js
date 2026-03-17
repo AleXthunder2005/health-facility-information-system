@@ -55,3 +55,30 @@ export const assets = {
   virus_research_black,
   notice_icon
 };
+
+export const specialityData = [
+  {
+    speciality: "General physician",
+    label: "Терапевт",
+  },
+  {
+    speciality: "Gynecologist",
+    label: "Гинеколог",
+  },
+  {
+    speciality: "Dermatologist",
+    label: "Дерматолог",
+  },
+  {
+    speciality: "Pediatricians",
+    label: "Педиатр",
+  },
+  {
+    speciality: "Neurologist",
+    label: "Невролог",
+  },
+  {
+    speciality: "Gastroenterologist",
+    label: "Гастроэнтеролог",
+  },
+];

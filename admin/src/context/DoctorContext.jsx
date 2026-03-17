@@ -53,10 +53,13 @@ const DoctorContextProvider = (props) => {
     // Получение истории конкретного пациента
     const getPatientHistory = async (patientId) => {
         try {
-            const { data } = await axios.get(`${backendUrl}/api/visits/doctor`, { headers: { dToken } });
+            const { data } = await axios.get(
+                `${backendUrl}/api/visits/doctor?patientId=${patientId}`,
+                { headers: { dToken } }
+            );
+
             if (data.success) {
-                // Фильтруем визиты конкретного пациента
-                return data.visits.filter(v => v.userId === patientId);
+                return data.visits;
             } else {
                 toast.error(data.message);
                 return [];

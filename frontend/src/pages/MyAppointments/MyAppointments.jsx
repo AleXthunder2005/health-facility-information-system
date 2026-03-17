@@ -179,19 +179,21 @@ const MyAppointments = () => {
                             className={`bg-white border border-gray-200 rounded-2xl p-5 shadow-sm flex flex-col md:flex-row gap-5 ${styles["myAppointments__item"]}`}
                         >
 
-                            <div className="w-full md:w-36 h-36 rounded-xl overflow-hidden bg-white flex items-center justify-center">
-
+                            <div className="w-24 h-24 rounded-xl overflow-hidden flex items-center justify-center">
                                 <img
-                                    className="max-h-full object-contain"
                                     src={
-                                        import.meta.env.VITE_BACKEND_URL +
-                                        "/images/" +
-                                        item.docData.image
+                                        item.docData?.image
+                                            ? import.meta.env.VITE_BACKEND_URL + "/images/" + item.docData.image
+                                            : assets.doctor_male
                                     }
-                                    alt=""
+                                    className={
+                                        item.docData?.image
+                                            ? "w-full h-full object-cover"
+                                            : "w-10"
+                                    }
                                 />
-
                             </div>
+
 
                             <div className={`flex-1 text-sm text-gray-600 ${styles["myAppointments__info"]}`}>
 
